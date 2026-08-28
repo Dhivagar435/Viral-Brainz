@@ -9,6 +9,7 @@ import { containerVariants, itemVariants } from "../utils/motion";
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
 
   const navLinks = [
     { name: "Home", href: "#home" },
@@ -21,6 +22,27 @@ const Navbar = () => {
     const onScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener("scroll", onScroll);
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // scroll-spy: watches each section, marks whichever is most visible as active
+  useEffect(() => {
+    const sections = navLinks
+      .map((link) => document.querySelector(link.href))
+      .filter(Boolean) as Element[];
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      },
+      { rootMargin: "-40% 0px -40% 0px" } // triggers when section is near vertical center
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    return () => sections.forEach((section) => observer.unobserve(section));
   }, []);
 
   return (
@@ -37,11 +59,11 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo */}
+            {/* Logo — size bumped up */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="text-2xl font-bold text-light"
+              className="text-3xl font-bold text-light"
             >
               Viral <span className="text-primary">Brainz</span>
             </motion.div>
@@ -51,35 +73,44 @@ const Navbar = () => {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="hidden md:flex gap-10 items-center"
+              className="hidden md:flex gap-2 items-center bg-light/5 border border-primary/10 rounded-full px-2 py-2"
             >
-              {navLinks.map((link) => (
-                <motion.div
-                  key={link.name}
-                  variants={itemVariants}
-                  className="relative group"
-                >
-                  <Link
-                    href={link.href}
-                    className="text-light/80 hover:text-primary font-medium transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                  {/* animated underline */}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
-                </motion.div>
-              ))}
-              <motion.button
-                whileHover={{
-                  scale: 1.05,
-                  boxShadow: "0 8px 25px rgba(253, 185, 19, 0.35)",
-                }}
-                whileTap={{ scale: 0.95 }}
-                className="bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
-              >
-                Get Started
-              </motion.button>
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace("#", "");
+                return (
+                  <motion.div key={link.name} variants={itemVariants} className="relative">
+                    <Link
+                      href={link.href}
+                      className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                        isActive ? "text-dark" : "text-light/70 hover:text-primary"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+
+                    {/* animated pill background — slides between active links */}
+                    {isActive && (
+                      <motion.div
+                        layoutId="activeNavPill"
+                        className="absolute inset-0 bg-primary rounded-full"
+                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                  </motion.div>
+                );
+              })}
             </motion.div>
+
+            <motion.button
+              whileHover={{
+                scale: 1.05,
+                boxShadow: "0 8px 25px rgba(253, 185, 19, 0.35)",
+              }}
+              whileTap={{ scale: 0.95 }}
+              className="hidden md:block bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
+            >
+              Get Started
+            </motion.button>
 
             {/* Mobile Menu Button */}
             <motion.button
@@ -120,17 +151,22 @@ const Navbar = () => {
               variants={containerVariants}
               className="flex flex-col items-center justify-center gap-8 h-[80%]"
             >
-              {navLinks.map((link) => (
-                <motion.div key={link.name} variants={itemVariants}>
-                  <Link
-                    href={link.href}
-                    onClick={() => setIsOpen(false)}
-                    className="text-3xl font-bold text-light hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </Link>
-                </motion.div>
-              ))}
+              {navLinks.map((link) => {
+                const isActive = activeSection === link.href.replace("#", "");
+                return (
+                  <motion.div key={link.name} variants={itemVariants}>
+                    <Link
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-3xl font-bold transition-colors ${
+                        isActive ? "text-primary" : "text-light hover:text-primary"
+                      }`}
+                    >
+                      {link.name}
+                    </Link>
+                  </motion.div>
+                );
+              })}
               <motion.button
                 variants={itemVariants}
                 onClick={() => setIsOpen(false)}

@@ -173,8 +173,8 @@ const Hero = () => {
 
   const heroImages = [
     "/hero-team2.jpg",
-    "/hero-bg-2.jpg",  // Add your 2nd image
-    "/hero-bg-1.jpg",  // Add your 3rd image
+    "/hero-bg-2.jpg",
+    "/hero-bg-1.jpg",
   ];
 
   // Auto-rotate images every 5 seconds
@@ -202,9 +202,6 @@ const Hero = () => {
             "radial-gradient(circle at 20% 50%, rgba(253, 185, 19, 0.15) 0%, transparent 50%)",
         }}
       />
-
-      {/* Floating Icons - Only on right side */}
-      <FloatingIcons />
 
       {/* Static blob - no animation */}
       <div className="absolute top-20 right-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-20" />
@@ -309,6 +306,8 @@ const Hero = () => {
             ))}
           </div>
 
+          <FloatingIcons />
+
           {/* Image Indicators (dots) */}
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
             {heroImages.map((_, index) => (
@@ -326,18 +325,20 @@ const Hero = () => {
           </div>
 
           {/* Badge floating around image */}
-          {/* Badge floating around image */}
+
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 md:-bottom-8 md:-left-8 lg:-bottom-12 lg:-left-12 bg-primary rounded-lg sm:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-4 shadow-lg sm:shadow-xl whitespace-nowrap"
+            className="absolute bottom-2 sm:-bottom-4 md:-bottom-6 lg:-bottom-8 left-2 sm:left-2 md:-left-4 lg:-left-6 z-30 bg-primary rounded-lg sm:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-4 shadow-lg sm:shadow-xl whitespace-nowrap"
           >
-            <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl font-bold text-dark">10+ <span className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium">Years of Growth</span></p>
+            <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl font-bold text-dark">
+              10+ <span className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium">Years of Growth</span>
+            </p>
           </motion.div>
         </motion.div>
       </div>
 
-      {/* Scroll Indicator */}
+
       {/* Scroll Indicator */}
       <motion.div
         animate={{ y: [0, 10, 0] }}

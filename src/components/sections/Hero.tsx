@@ -326,10 +326,11 @@ const Hero = () => {
           </div>
 
           {/* Badge floating around image */}
+          {/* Badge floating around image */}
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
-            className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 lg:-bottom-0.5 lg:-left-20 bg-primary rounded-lg sm:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-4 shadow-lg sm:shadow-xl whitespace-nowrap"
+            className="absolute -bottom-4 -left-4 sm:-bottom-6 sm:-left-6 md:-bottom-8 md:-left-8 lg:-bottom-12 lg:-left-12 bg-primary rounded-lg sm:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-4 shadow-lg sm:shadow-xl whitespace-nowrap"
           >
             <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl font-bold text-dark">10+ <span className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium">Years of Growth</span></p>
           </motion.div>
@@ -337,10 +338,11 @@ const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
+      {/* Scroll Indicator */}
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
-        className="absolute bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-1.5 left-1/2 -translate-x-1/2 text-center"
+        className="absolute bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 left-1/2 -translate-x-1/2 text-center"
       >
         <p className="text-light/60 text-sm font-medium mb-2">
           Scroll to explore

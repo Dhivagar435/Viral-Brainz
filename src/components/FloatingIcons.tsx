@@ -29,39 +29,38 @@ interface IconCardProps {
 const FloatingIcons = () => {
   // Marketing agency focused icons with responsive positions
   const getIconsData = () => {
-    // Desktop (1280px+): 8 icons scattered around image - FIXED POSITIONS
-    const desktopIcons: IconData[] = [
-      // Top right cluster
-      // { Icon: FaInstagram, label: "Social Media Marketing", top: "20%", right: "43%", delay: 0, duration: 4 },
-
-      { Icon: FaInstagram, label: "Social Media Marketing", top: "20%", right: "3%", delay: 0.3, duration: 4.2 },
-
-
-      
-      // Middle right cluster
-      { Icon: FaYoutube, label: "YouTube Growth Strategy", top: "60%", right: "3%", delay: 1, duration: 4.5 },
-
-      { Icon: TrendingUp, label: "Paid Ads & PPC", top: "92%", right: "28%", delay: 0.5, duration: 5 },
-
-
-      
-      // Bottom right cluster
-      { Icon: Search, label: "SEO & Content", top: "88%", right: "17%", delay: 1.5, duration: 5.5 },
-
-      { Icon: Users, label: "Influencer Campaigns", top: "75%", right: "8%", delay: 1.8, duration: 5.2 },
-      
-      // Far right side
-      { Icon: BarChart3, label: "Analytics & Reporting", top: "40%", right: "1%", delay: 0.8, duration: 4.8 },
-
-      // { Icon: Zap, label: "Growth Hacking", top: "10%", right: "8%", delay: 1.2, duration: 5.1 },
-
-
+    // Tablet (768px - 1023px): 3-4 icons, closer to center
+    const tabletIcons: IconData[] = [
+      { Icon: FaInstagram, label: "Social Media", top: "15%", right: "12%", delay: 0.3, duration: 4.2 },
+      { Icon: FaYoutube, label: "YouTube Growth", top: "60%", right: "10%", delay: 1, duration: 4.5 },
+      { Icon: TrendingUp, label: "Performance Ads", top: "80%", right: "20%", delay: 0.5, duration: 5 },
+      { Icon: Search, label: "SEO & Content", top: "88%", right: "30%", delay: 1.5, duration: 5.5 },
     ];
 
-    return { desktopIcons };
+    // Laptop (1024px - 1279px): 6 icons, ADJUSTED RIGHT VALUES
+    const laptopIcons: IconData[] = [
+      { Icon: FaInstagram, label: "Social Media Marketing", top: "20%", right: "8%", delay: 0.3, duration: 4.2 },
+      { Icon: FaYoutube, label: "YouTube Growth Strategy", top: "60%", right: "8%", delay: 1, duration: 4.5 },
+      { Icon: TrendingUp, label: "Paid Ads & PPC", top: "92%", right: "35%", delay: 0.5, duration: 5 },
+      { Icon: Search, label: "SEO & Content", top: "88%", right: "25%", delay: 1.5, duration: 5.5 },
+      { Icon: Users, label: "Influencer Campaigns", top: "75%", right: "15%", delay: 1.8, duration: 5.2 },
+      { Icon: BarChart3, label: "Analytics & Reporting", top: "40%", right: "5%", delay: 0.8, duration: 4.8 },
+    ];
+
+    // Desktop (1280px+): 6 icons, FAR RIGHT
+    const desktopIcons: IconData[] = [
+      { Icon: FaInstagram, label: "Social Media Marketing", top: "20%", right: "3%", delay: 0.3, duration: 4.2 },
+      { Icon: FaYoutube, label: "YouTube Growth Strategy", top: "60%", right: "3%", delay: 1, duration: 4.5 },
+      { Icon: TrendingUp, label: "Paid Ads & PPC", top: "92%", right: "28%", delay: 0.5, duration: 5 },
+      { Icon: Search, label: "SEO & Content", top: "88%", right: "17%", delay: 1.5, duration: 5.5 },
+      { Icon: Users, label: "Influencer Campaigns", top: "75%", right: "8%", delay: 1.8, duration: 5.2 },
+      { Icon: BarChart3, label: "Analytics & Reporting", top: "40%", right: "1%", delay: 0.8, duration: 4.8 },
+    ];
+
+    return { tabletIcons, laptopIcons, desktopIcons };
   };
 
-  const { desktopIcons } = getIconsData();
+  const { tabletIcons, laptopIcons, desktopIcons } = getIconsData();
 
   // Reusable icon component with proper types
   const IconCard = ({ Icon, label, top, right, delay, duration }: IconCardProps) => (
@@ -93,8 +92,38 @@ const FloatingIcons = () => {
 
   return (
     <>
-      {/* Desktop Version: lg:block (1024px+) */}
-      <div className="absolute inset-0 pointer-events-none hidden lg:block">
+      {/* Tablet Version: md:block lg:hidden (768px - 1023px) */}
+      <div className="absolute inset-0 pointer-events-none hidden md:block lg:hidden">
+        {tabletIcons.map(({ Icon, label, top, right, delay, duration }) => (
+          <IconCard
+            key={label}
+            Icon={Icon}
+            label={label}
+            top={top}
+            right={right}
+            delay={delay}
+            duration={duration}
+          />
+        ))}
+      </div>
+
+      {/* Laptop Version: lg:block xl:hidden (1024px - 1279px) */}
+      <div className="absolute inset-0 pointer-events-none hidden lg:block xl:hidden">
+        {laptopIcons.map(({ Icon, label, top, right, delay, duration }) => (
+          <IconCard
+            key={label}
+            Icon={Icon}
+            label={label}
+            top={top}
+            right={right}
+            delay={delay}
+            duration={duration}
+          />
+        ))}
+      </div>
+
+      {/* Desktop Version: xl:block (1280px+) */}
+      <div className="absolute inset-0 pointer-events-none hidden xl:block">
         {desktopIcons.map(({ Icon, label, top, right, delay, duration }) => (
           <IconCard
             key={label}

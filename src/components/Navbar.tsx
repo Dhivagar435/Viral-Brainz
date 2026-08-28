@@ -59,11 +59,11 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo — size bumped up */}
+            {/* Logo — smaller on mobile, bigger on desktop */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="text-3xl font-bold text-light"
+              className="text-2xl md:text-3xl font-bold text-light"
             >
               Viral <span className="text-primary">Brainz</span>
             </motion.div>
@@ -134,7 +134,12 @@ const Navbar = () => {
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-[60] bg-dark/95 backdrop-blur-lg md:hidden"
           >
-            <div className="flex justify-end px-6 pt-6">
+            {/* header row: logo + close button, side by side */}
+            <div className="flex justify-between items-center px-6 pt-6">
+              <div className="text-2xl font-bold text-light">
+                Viral <span className="text-primary">Brainz</span>
+              </div>
+
               <motion.button
                 whileTap={{ scale: 0.9 }}
                 onClick={() => setIsOpen(false)}
@@ -149,7 +154,7 @@ const Navbar = () => {
               initial="hidden"
               animate="visible"
               variants={containerVariants}
-              className="flex flex-col items-center justify-center gap-8 h-[80%]"
+              className="flex flex-col items-center justify-center gap-8 h-[75%]"
             >
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace("#", "");

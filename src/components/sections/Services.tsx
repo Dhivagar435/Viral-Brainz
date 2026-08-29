@@ -1,7 +1,7 @@
 "use client";
 
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   TrendingUp,
   Search,
@@ -11,195 +11,236 @@ import {
   Smartphone,
 } from "lucide-react";
 import { FaInstagram, FaYoutube } from "react-icons/fa";
-import { containerVariants, itemVariants } from "@/src/utils/motion";
 import MagneticText from "../MagneticText";
 
 const services = [
   {
     icon: FaInstagram,
+    category: "Content",
     title: "Social Media Management",
-    description:
-      "We create engaging content, manage communities, and build meaningful brand presence across Instagram, Facebook, LinkedIn, X, and emerging platforms.",
+    outcome: "Consistent daily presence, zero guesswork",
+    features: [
+      "Content calendar",
+      "Community management",
+      "Cross-platform posting",
+    ],
   },
   {
     icon: TrendingUp,
+    category: "Growth",
     title: "Performance Marketing",
-    description:
-      "Scale your business through highly targeted Meta, Google, and YouTube advertising campaigns designed for maximum ROI.",
+    outcome: "Every rupee tracked back to ROI",
+    features: [
+      "Meta & Google Ads",
+      "Conversion tracking",
+      "A/B tested creative",
+    ],
   },
   {
     icon: FaYoutube,
+    category: "Content",
     title: "YouTube Management",
-    description:
-      "From strategy and scripting to production, optimization, monetization, and analytics — we manage every aspect of your YouTube journey.",
+    outcome: "From script to monetized channel",
+    features: [
+      "Scripting & production",
+      "SEO optimization",
+      "Analytics reporting",
+    ],
   },
   {
     icon: Search,
+    category: "Growth",
     title: "SEO",
-    description:
-      "Increase your search visibility through technical SEO, keyword optimization, content strategy, and link building.",
+    outcome: "Rank where your customers search",
+    features: ["Technical audits", "Keyword strategy", "Link building"],
   },
   {
     icon: Users,
+    category: "Content",
     title: "Influencer Marketing",
-    description:
-      "Collaborate with creators that align with your brand and drive authentic audience engagement.",
+    outcome: "Borrowed trust, real conversions",
+    features: [
+      "Creator matching",
+      "Campaign management",
+      "Performance tracking",
+    ],
   },
   {
     icon: Code2,
+    category: "Tech",
     title: "Website Development",
-    description:
-      "Modern, responsive, SEO-friendly websites designed to convert visitors into customers.",
+    outcome: "Built to convert, not just to look good",
+    features: ["Responsive design", "SEO-ready structure", "Fast load times"],
   },
   {
     icon: Film,
+    category: "Growth",
     title: "Movie Promotions",
-    description:
-      "Digital campaigns including trailer launches, influencer collaborations, meme marketing, paid advertising, and release promotions.",
+    outcome: "Launch-day buzz that actually lands",
+    features: ["Trailer campaigns", "Influencer tie-ins", "Meme marketing"],
   },
   {
     icon: Smartphone,
+    category: "Growth",
     title: "Mobile & Email Marketing",
-    description:
-      "Reach your audience through personalized WhatsApp, SMS, and email campaigns that improve engagement and conversions.",
+    outcome: "Direct line to your audience",
+    features: ["WhatsApp campaigns", "SMS automation", "Email sequences"],
   },
 ];
 
-// Individual card — needs its own component to track mouse position per-card
-const ServiceCard = ({
+const StackCard = ({
   icon: Icon,
+  category,
   title,
-  description,
+  outcome,
+  features,
+  index,
+  total,
+  isLast,
 }: {
   icon: React.ElementType;
+  category: string;
   title: string;
-  description: string;
+  outcome: string;
+  features: string[];
+  index: number;
+  total: number;
+  isLast: boolean;
 }) => {
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [mousePos, setMousePos] = useState({ x: 50, y: 50 });
-  const [rotate, setRotate] = useState({ x: 0, y: 0 });
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const isLeft = index % 2 === 0;
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const el = cardRef.current;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
+  const { scrollYProgress } = useScroll({
+    target: wrapperRef,
+    offset: ["start center", "center center"],
+  });
 
-    // spotlight position, as a %
-    const px = ((e.clientX - rect.left) / rect.width) * 100;
-    const py = ((e.clientY - rect.top) / rect.height) * 100;
-    setMousePos({ x: px, y: py });
+  // Smoother scale with better progression
+  const scale = useTransform(scrollYProgress, [0, 1], [isLast ? 1 : 0.8, 1]);
 
-    // subtle 3D tilt based on cursor position
-    const rotateY = ((e.clientX - rect.left) / rect.width - 0.5) * 12;
-    const rotateX = ((e.clientY - rect.top) / rect.height - 0.5) * -12;
-    setRotate({ x: rotateX, y: rotateY });
-  };
+  // Opacity remains visible throughout
+  const opacity = useTransform(
+    scrollYProgress,
+    [0, 1],
+    isLast ? [1, 1] : [0.6, 1],
+  );
 
-  const reset = () => {
-    setRotate({ x: 0, y: 0 });
-  };
+  // Smooth lateral movement from sides to center
+  const startX = isLeft ? -120 : 120;
+  const x = useTransform(scrollYProgress, [0, 1], [startX, 0]);
+
+  // Rotation for depth effect
+  const rotate = useTransform(scrollYProgress, [0, 1], [isLeft ? -3 : 3, 0]);
+
+  // Y offset for staggered effect
+  const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
 
   return (
-    <motion.div variants={itemVariants} style={{ perspective: 1000 }}>
+    <div ref={wrapperRef} className="relative h-[120vh]">
       <motion.div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={reset}
-        animate={{ rotateX: rotate.x, rotateY: rotate.y }}
-        transition={{ type: "spring", stiffness: 150, damping: 15 }}
-        className="group relative bg-light/5 border border-primary/15 rounded-2xl p-8 overflow-hidden hover:border-primary/50 transition-colors duration-300"
-        style={{ transformStyle: "preserve-3d" }}
+        style={{
+          scale,
+          opacity,
+          x,
+          y,
+          rotate,
+          zIndex: index,
+        }}
+        className="sticky top-24 sm:top-28 w-full sm:w-[55%] md:w-[65%] mx-auto"
       >
-        {/* cursor-tracking spotlight */}
         <div
-          className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          className="relative bg-gradient-to-br from-dark-800 to-dark-900 border border-primary/10 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden min-h-[320px] sm:min-h-[360px] flex flex-col justify-between backdrop-blur-sm"
           style={{
-            background: `radial-gradient(400px circle at ${mousePos.x}% ${mousePos.y}%, rgba(253, 185, 19, 0.15), transparent 70%)`,
+            boxShadow:
+              "0 25px 50px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)",
           }}
-        />
-
-        {/* ghost number, background decoration */}
-        {/* <span className="absolute -top-4 -right-2 text-8xl font-black text-primary/5 select-none group-hover:text-primary/10 transition-colors duration-300">
-          {String(index + 1).padStart(2, "0")}
-        </span> */}
-
-        <div
-          className="relative z-10"
-          style={{ transform: "translateZ(40px)" }}
         >
-          <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/30 flex items-center justify-center mb-6 group-hover:bg-primary group-hover:rotate-6 transition-all duration-300">
-            <Icon className="w-6 h-6 text-primary group-hover:text-dark transition-colors duration-300" />
+          <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/0 rounded-full blur-3xl" />
+
+          <div className="relative z-10 flex items-start justify-between gap-6">
+            <div className="flex items-center gap-3">
+              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary flex items-center justify-center shrink-0">
+                <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-dark" />
+              </div>
+              <span className="text-primary/70 text-xs font-mono uppercase tracking-widest border border-primary/30 rounded-full px-3 py-1">
+                {category}
+              </span>
+            </div>
+            <span className="text-primary font-mono text-sm sm:text-base pt-2">
+              {String(index + 1).padStart(2, "0")} /{" "}
+              {String(total).padStart(2, "0")}
+            </span>
           </div>
 
-          <h3 className="text-xl font-bold text-light mb-3">{title}</h3>
-          <p className="text-light/60 leading-relaxed text-sm">{description}</p>
-
-          {/* animated arrow, appears on hover */}
-          <motion.div
-            initial={{ opacity: 0, x: -10 }}
-            whileHover={{ opacity: 1, x: 0 }}
-            className="flex items-center gap-2 mt-5 text-primary font-semibold text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-          >
-            Learn more
-            <motion.span
-              animate={{ x: [0, 4, 0] }}
-              transition={{ duration: 1.2, repeat: Infinity }}
-            >
-              →
-            </motion.span>
-          </motion.div>
+          <div className="relative z-10 mt-6">
+            <h3 className="text-2xl sm:text-3xl font-bold text-light mb-2">
+              {title}
+            </h3>
+            <p className="text-primary/90 text-sm sm:text-base font-medium mb-5">
+              {outcome}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {features.map((f) => (
+                <span
+                  key={f}
+                  className="text-xs sm:text-sm text-light-70 bg-dark-700 border border-dark-700 rounded-full px-3 py-1.5"
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
       </motion.div>
-    </motion.div>
+    </div>
   );
 };
 
 const Services = () => {
   return (
-    <section id="services" className="relative bg-dark py-24 overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 80% 20%, rgba(253, 185, 19, 0.1) 0%, transparent 50%)",
-        }}
-      />
+    <section id="services" className="relative bg-dark-900 py-24">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 80% 20%, var(--color-primary-100) 0%, transparent 50%)",
+          }}
+        />
+      </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-16"
+          className="text-center mb-16"
         >
-          <span className="inline-block bg-primary/10 border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-block bg-dark-800 border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
             What We Do
           </span>
           <MagneticText>
-            {" "}
             <h2 className="text-4xl md:text-5xl font-bold text-light mb-4">
               Digital Marketing <span className="text-primary">Services</span>
             </h2>
           </MagneticText>
-          <p className="text-light/60 text-lg">
-            End-to-end digital solutions built to grow your brand, your way.
+          <p className="text-light-70 text-lg">
+            Scroll through — each service stacks as you go.
           </p>
         </motion.div>
 
-       <MagneticText>
-         <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.1 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
+        <div>
           {services.map((service, index) => (
-            <ServiceCard key={service.title} {...service} />
+            <StackCard
+              key={service.title}
+              {...service}
+              index={index}
+              total={services.length}
+              isLast={index === services.length - 1}
+            />
           ))}
-        </motion.div>
-       </MagneticText>
+        </div>
       </div>
     </section>
   );

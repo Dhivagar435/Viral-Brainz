@@ -8,7 +8,6 @@ import FloatingIcons from "../FloatingIcons";
 import { useState, useEffect } from "react";
 
 const Hero = () => {
-  // Image carousel state
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   const heroImages = [
@@ -17,11 +16,10 @@ const Hero = () => {
     "/hero-bg-1.jpg",
   ];
 
-  // Auto-rotate images every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 3000); // 3 seconds
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [heroImages.length]);
@@ -29,9 +27,9 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-dark overflow-hidden flex items-center pt-20 md:pt-0"
+      className="relative min-h-screen bg-dark-900 overflow-hidden flex items-center pt-20 md:pt-0"
     >
-      {/* Radial glow background */}
+      {/* Radial glow — use the token instead of inline rgba */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -39,23 +37,20 @@ const Hero = () => {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 50%, rgba(253, 185, 19, 0.15) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 50%, var(--color-primary-100) 0%, transparent 50%)",
         }}
       />
 
-      {/* Static blob - no animation */}
-      <div className="absolute top-20 right-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-20" />
+      {/* Static blob - smaller opacity, sits on dark-900 not pure black so it reads as a glow, not a smear */}
+      <div className="absolute top-20 right-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-10" />
 
-      {/* Animated blob */}
       <motion.div
         animate={{ y: [0, 20, 0] }}
         transition={{ duration: 5, repeat: Infinity, delay: 0.5 }}
-        className="absolute bottom-20 left-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-20"
+        className="absolute bottom-20 left-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-10"
       />
 
-      {/* Main Content — two columns */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-        {/* Left: text */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -76,7 +71,7 @@ const Hero = () => {
           <MagneticText>
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg md:text-xl text-light/70 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg md:text-xl text-light-70 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0"
             >
               From social media and performance marketing to YouTube growth,
               influencer campaigns, SEO, and website development we help
@@ -88,22 +83,26 @@ const Hero = () => {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center"
           >
+            {/* Primary CTA: hover now shifts to a deeper gold, not just scale+shadow */}
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 20px 40px rgba(253, 185, 19, 0.4)",
+                backgroundColor: "var(--color-primary-600)",
+                boxShadow: "0 20px 40px rgba(253, 185, 19, 0.35)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="bg-primary text-dark px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg hover:shadow-xl transition-all duration-300 w-full sm:w-auto"
+              className="bg-primary text-dark px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 w-full sm:w-auto"
             >
               Let's Grow Together
             </motion.button>
 
+            {/* Secondary CTA: outline on dark-800 instead of transparent-on-black, gives it a surface */}
             <motion.button
               whileHover={{
                 scale: 1.05,
                 borderColor: "#FDB913",
                 color: "#FDB913",
+                backgroundColor: "var(--color-dark-800)",
               }}
               whileTap={{ scale: 0.95 }}
               className="border-2 border-primary text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 w-full sm:w-auto"
@@ -113,16 +112,15 @@ const Hero = () => {
           </motion.div>
         </motion.div>
 
-        {/* Right: image carousel with floating icons around it */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative w-full h-80 sm:h-96 lg:h-125"
         >
-          {/* Image Container with carousel */}
+          {/* Border now dark-700, not primary/40 — the gold border on a gold-accented page was fighting itself */}
           <div
-            className="relative overflow-hidden shadow-2xl border-4 border-primary/40 w-full h-full"
+            className="relative overflow-hidden shadow-2xl border-4 border-dark-700 w-full h-full"
             style={{ borderRadius: "63% 37% 54% 46% / 43% 39% 61% 57%" }}
           >
             {heroImages.map((image, index) => (
@@ -148,7 +146,6 @@ const Hero = () => {
 
           <FloatingIcons />
 
-          {/* Image Indicators (dots) */}
           <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
             {heroImages.map((_, index) => (
               <motion.button
@@ -164,8 +161,6 @@ const Hero = () => {
             ))}
           </div>
 
-          {/* Badge floating around image */}
-
           <motion.div
             animate={{ y: [0, -10, 0] }}
             transition={{ duration: 3, repeat: Infinity }}
@@ -178,14 +173,12 @@ const Hero = () => {
         </motion.div>
       </div>
 
-
-      {/* Scroll Indicator */}
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 left-1/2 -translate-x-1/2 text-center"
       >
-        <p className="text-light/60 text-sm font-medium mb-2">
+        <p className="text-light-40 text-sm font-medium mb-2">
           Scroll to explore
         </p>
         <svg

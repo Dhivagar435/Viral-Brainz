@@ -24,7 +24,6 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // scroll-spy: watches each section, marks whichever is most visible as active
   useEffect(() => {
     const sections = navLinks
       .map((link) => document.querySelector(link.href))
@@ -38,7 +37,7 @@ const Navbar = () => {
           }
         });
       },
-      { rootMargin: "-40% 0px -40% 0px" } // triggers when section is near vertical center
+      { rootMargin: "-40% 0px -40% 0px" }
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -53,13 +52,12 @@ const Navbar = () => {
         transition={{ duration: 0.6 }}
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-dark/80 backdrop-blur-md border-b border-primary/20 shadow-lg"
+            ? "bg-dark-900/80 backdrop-blur-md border-b border-dark-700 shadow-lg"
             : "bg-transparent border-b border-transparent"
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* Logo — smaller on mobile, bigger on desktop */}
             <motion.div
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
@@ -68,12 +66,12 @@ const Navbar = () => {
               Viral <span className="text-primary">Brainz</span>
             </motion.div>
 
-            {/* Desktop Links */}
+            {/* Pill container: dark-800 surface + dark-700 border instead of light/5 + primary/10 — reads as a real surface, not a translucent smear */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="hidden md:flex gap-2 items-center bg-light/5 border border-primary/10 rounded-full px-2 py-2"
+              className="hidden md:flex gap-2 items-center bg-dark-800 border border-dark-700 rounded-full px-2 py-2"
             >
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace("#", "");
@@ -82,13 +80,12 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
-                        isActive ? "text-dark" : "text-light/70 hover:text-primary"
+                        isActive ? "text-dark" : "text-light-70 hover:text-primary"
                       }`}
                     >
                       {link.name}
                     </Link>
 
-                    {/* animated pill background — slides between active links */}
                     {isActive && (
                       <motion.div
                         layoutId="activeNavPill"
@@ -101,10 +98,12 @@ const Navbar = () => {
               })}
             </motion.div>
 
+            {/* CTA: hover now shifts to primary-600, not just a glow shadow */}
             <motion.button
               whileHover={{
                 scale: 1.05,
-                boxShadow: "0 8px 25px rgba(253, 185, 19, 0.35)",
+                backgroundColor: "var(--color-primary-600)",
+                boxShadow: "0 8px 25px rgba(253, 185, 19, 0.3)",
               }}
               whileTap={{ scale: 0.95 }}
               className="hidden md:block bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
@@ -112,7 +111,6 @@ const Navbar = () => {
               Get Started
             </motion.button>
 
-            {/* Mobile Menu Button */}
             <motion.button
               whileTap={{ scale: 0.9 }}
               onClick={() => setIsOpen(true)}
@@ -125,16 +123,14 @@ const Navbar = () => {
         </div>
       </motion.nav>
 
-      {/* Full-screen mobile menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-dark/95 backdrop-blur-lg md:hidden"
+            className="fixed inset-0 z-[60] bg-dark-900/95 backdrop-blur-lg md:hidden"
           >
-            {/* header row: logo + close button, side by side */}
             <div className="flex justify-between items-center px-6 pt-6">
               <div className="text-2xl font-bold text-light">
                 Viral <span className="text-primary">Brainz</span>
@@ -175,6 +171,7 @@ const Navbar = () => {
               <motion.button
                 variants={itemVariants}
                 onClick={() => setIsOpen(false)}
+                whileHover={{ backgroundColor: "var(--color-primary-600)" }}
                 className="bg-primary text-dark px-8 py-3 rounded-full font-semibold text-lg mt-4"
               >
                 Get Started

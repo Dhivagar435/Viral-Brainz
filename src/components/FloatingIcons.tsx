@@ -39,16 +39,16 @@ const IconCard = ({ Icon, label, top, left, delay, duration }: IconData) => (
     }}
   >
     <motion.div
-      whileHover={{ scale: 1.2 }}
+      whileHover={{ scale: 1.2, backgroundColor: "var(--color-dark-800)" }}
       animate={{ y: [0, -12, 0] }}
       transition={{ y: { duration, repeat: Infinity, delay, ease: "easeInOut" } }}
-      className="relative bg-light/5 backdrop-blur-sm border border-primary/30 rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg"
+      className="relative bg-dark-800 backdrop-blur-sm border border-dark-700 rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg"
       style={{ willChange: "transform" }}
     >
       <Icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-primary" />
     </motion.div>
 
-    <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 text-xs font-medium text-light bg-dark/80 border border-primary/30 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">
+    <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 text-xs font-medium text-light bg-dark-900/90 border border-dark-700 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">
       {label}
     </span>
   </motion.div>

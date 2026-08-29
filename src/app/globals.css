@@ -3,9 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  /* Locked brand colors — do not change */
   --color-primary: #FDB913;
   --color-dark: #000000;
   --color-light: #FFFFFF;
+
+  /* Derived shades — same hues, for layering/depth */
+  --color-dark-900: #0A0A0A;   /* section bg instead of pure #000 */
+  --color-dark-800: #141414;   /* card bg */
+  --color-dark-700: #1F1F1F;   /* border / divider on dark */
+  --color-primary-600: #E0A50E; /* hover state, slightly deeper gold */
+  --color-primary-300: #FDD873; /* tint for subtle highlights/glows */
+  --color-primary-100: rgba(253, 185, 19, 0.08); /* faint bg wash */
+  --color-light-70: rgba(255, 255, 255, 0.7);    /* body text on dark */
+  --color-light-40: rgba(255, 255, 255, 0.4);    /* muted/placeholder */
 }
 
 @theme inline {
@@ -14,6 +26,14 @@
   --color-primary: var(--color-primary);
   --color-dark: var(--color-dark);
   --color-light: var(--color-light);
+  --color-dark-900: var(--color-dark-900);
+  --color-dark-800: var(--color-dark-800);
+  --color-dark-700: var(--color-dark-700);
+  --color-primary-600: var(--color-primary-600);
+  --color-primary-300: var(--color-primary-300);
+  --color-primary-100: var(--color-primary-100);
+  --color-light-70: var(--color-light-70);
+  --color-light-40: var(--color-light-40);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }

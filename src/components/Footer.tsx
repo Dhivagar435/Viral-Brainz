@@ -112,3 +112,66 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
+
+
+
+// const services = [
+//   {
+//     image: "/services/social-media-management.png",
+//     category: "Content",
+//     title: "Social Media Management",
+//     outcome: "Consistent daily presence, zero guesswork",
+//     features: ["Content calendar", "Community management", "Cross-platform posting"],
+//   },
+//   {
+//     image: "/services/performance-marketing.png",
+//     category: "Growth",
+//     title: "Performance Marketing",
+//     outcome: "Every rupee tracked back to ROI",
+//     features: ["Meta & Google Ads", "Conversion tracking", "A/B tested creative"],
+//   },
+//   {
+//     image: "/services/youtube.png",
+//     category: "Content",
+//     title: "YouTube Management",
+//     outcome: "From script to monetized channel",
+//     features: ["Scripting & production", "SEO optimization", "Analytics reporting"],
+//   },
+//   {
+//     image: "/services/seo.png",
+//     category: "Growth",
+//     title: "SEO",
+//     outcome: "Rank where your customers search",
+//     features: ["Technical audits", "Keyword strategy", "Link building"],
+//   },
+//   {
+//     image: "/services/influencer-marketing.png",
+//     category: "Content",
+//     title: "Influencer Marketing",
+//     outcome: "Borrowed trust, real conversions",
+//     features: ["Creator matching", "Campaign management", "Performance tracking"],
+//   },
+//   {
+//     image: "/services/website-development.png",
+//     category: "Tech",
+//     title: "Website Development",
+//     outcome: "Built to convert, not just to look good",
+//     features: ["Responsive design", "SEO-ready structure", "Fast load times"],
+//   },
+//   {
+//     image: "/services/movie-promotion.png",
+//     category: "Growth",
+//     title: "Movie Promotions",
+//     outcome: "Launch-day buzz that actually lands",
+//     features: ["Trailer campaigns", "Influencer tie-ins", "Meme marketing"],
+//   },
+//   {
+//     image: "/services/email-marketing.png",
+//     category: "Growth",
+//     title: "Mobile & Email Marketing",
+//     outcome: "Direct line to your audience",
+//     features: ["WhatsApp campaigns", "SMS automation", "Email sequences"],
+//   },
+// ];

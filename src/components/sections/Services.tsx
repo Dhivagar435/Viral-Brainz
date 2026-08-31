@@ -2,6 +2,7 @@
 
 import { useRef } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
 import {
   TrendingUp,
   Search,
@@ -16,6 +17,7 @@ import MagneticText from "../MagneticText";
 const services = [
   {
     icon: FaInstagram,
+    image: "/services/social media marketing.jpg",
     category: "Content",
     title: "Social Media Management",
     outcome: "Consistent daily presence, zero guesswork",
@@ -27,6 +29,7 @@ const services = [
   },
   {
     icon: TrendingUp,
+    image: "/services/performance-marketing.jpg",
     category: "Growth",
     title: "Performance Marketing",
     outcome: "Every rupee tracked back to ROI",
@@ -38,6 +41,7 @@ const services = [
   },
   {
     icon: FaYoutube,
+    image: "/services/youtube2.jpg",
     category: "Content",
     title: "YouTube Management",
     outcome: "From script to monetized channel",
@@ -49,6 +53,7 @@ const services = [
   },
   {
     icon: Search,
+    image: "/services/seo.jpg",
     category: "Growth",
     title: "SEO",
     outcome: "Rank where your customers search",
@@ -56,6 +61,7 @@ const services = [
   },
   {
     icon: Users,
+    image: "/services/social-media-management.jpg",
     category: "Content",
     title: "Influencer Marketing",
     outcome: "Borrowed trust, real conversions",
@@ -67,6 +73,7 @@ const services = [
   },
   {
     icon: Code2,
+    image: "/services/website-development.jpg",
     category: "Tech",
     title: "Website Development",
     outcome: "Built to convert, not just to look good",
@@ -74,6 +81,7 @@ const services = [
   },
   {
     icon: Film,
+    image: "/services/movie-promotion.jpg",
     category: "Growth",
     title: "Movie Promotions",
     outcome: "Launch-day buzz that actually lands",
@@ -81,15 +89,16 @@ const services = [
   },
   {
     icon: Smartphone,
+    image: "/services/performance-marketing.jpg",
     category: "Growth",
     title: "Mobile & Email Marketing",
     outcome: "Direct line to your audience",
     features: ["WhatsApp campaigns", "SMS automation", "Email sequences"],
   },
 ];
-
 const StackCard = ({
   icon: Icon,
+  image,
   category,
   title,
   outcome,
@@ -99,6 +108,7 @@ const StackCard = ({
   isLast,
 }: {
   icon: React.ElementType;
+  image: string;
   category: string;
   title: string;
   outcome: string;
@@ -112,27 +122,22 @@ const StackCard = ({
 
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
-    offset: ["start center", "center center"],
+    offset: ["start end", "center center"],
   });
 
-  // Smoother scale with better progression
   const scale = useTransform(scrollYProgress, [0, 1], [isLast ? 1 : 0.8, 1]);
 
-  // Opacity remains visible throughout
   const opacity = useTransform(
     scrollYProgress,
     [0, 1],
     isLast ? [1, 1] : [0.6, 1],
   );
 
-  // Smooth lateral movement from sides to center
   const startX = isLeft ? -120 : 120;
   const x = useTransform(scrollYProgress, [0, 1], [startX, 0]);
 
-  // Rotation for depth effect
   const rotate = useTransform(scrollYProgress, [0, 1], [isLeft ? -3 : 3, 0]);
 
-  // Y offset for staggered effect
   const y = useTransform(scrollYProgress, [0, 1], [60, 0]);
 
   return (
@@ -146,33 +151,44 @@ const StackCard = ({
           rotate,
           zIndex: index,
         }}
-        className="sticky top-24 sm:top-28 w-full sm:w-[55%] md:w-[65%] mx-auto"
+        className="sticky top-24 sm:top-28 w-full sm:w-[85%] md:w-[75%] mx-auto"
       >
-        <div
-          className="relative bg-gradient-to-br from-dark-800 to-dark-900 border border-primary/10 rounded-3xl p-8 sm:p-10 shadow-2xl overflow-hidden min-h-[320px] sm:min-h-[360px] flex flex-col justify-between backdrop-blur-sm"
-          style={{
-            boxShadow:
-              "0 25px 50px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1)",
-          }}
-        >
-          <div className="absolute -top-8 -right-8 w-32 h-32 bg-gradient-to-br from-primary/20 to-primary/0 rounded-full blur-3xl" />
+        <div className="relative rounded-3xl overflow-hidden shadow-2xl min-h-[420px] sm:min-h-[460px]">
+          {/* Background image fills the whole card */}
+          <Image
+            src={image}
+            alt={title}
+            fill
+            sizes="(max-width: 768px) 100vw, 75vw"
+            className="object-cover"
+          />
 
-          <div className="relative z-10 flex items-start justify-between gap-6">
-            <div className="flex items-center gap-3">
-              <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary flex items-center justify-center shrink-0">
-                <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-dark" />
-              </div>
-              <span className="text-primary/70 text-xs font-mono uppercase tracking-widest border border-primary/30 rounded-full px-3 py-1">
-                {category}
-              </span>
-            </div>
-            <span className="text-primary font-mono text-sm sm:text-base pt-2">
-              {String(index + 1).padStart(2, "0")} /{" "}
-              {String(total).padStart(2, "0")}
-            </span>
+          {/* Dark gradient so text stays readable over any image */}
+          <div className="absolute inset-0 bg-gradient-to-t from-surface via-surface/60 to-surface/20" />
+
+          {/* Icon badge, top-left */}
+          <div className="absolute top-6 left-6 sm:top-8 sm:left-8 z-20 w-14 h-14 sm:w-16 sm:h-16 rounded-2xl bg-primary flex items-center justify-center shadow-lg">
+            <Icon className="w-7 h-7 sm:w-8 sm:h-8 text-dark" />
           </div>
 
-          <div className="relative z-10 mt-6">
+          {/* Index counter, top-right */}
+          <span className="absolute top-6 right-6 sm:top-8 sm:right-8 z-20 text-light font-mono text-sm sm:text-base bg-surface/40 backdrop-blur-md border border-light/10 rounded-full px-3 py-1">
+            {String(index + 1).padStart(2, "0")} /{" "}
+            {String(total).padStart(2, "0")}
+          </span>
+
+          {/* Glass panel with content, floating at the bottom */}
+          <div
+            className="absolute bottom-4 left-4 right-4 sm:bottom-6 sm:left-6 sm:right-6 z-20 rounded-2xl p-6 sm:p-8 backdrop-blur-xl bg-surface-card/40 border border-primary/10"
+            style={{
+              boxShadow:
+                "0 25px 50px -12px var(--color-shadow-dark), inset 0 1px 0 var(--color-shadow-light)",
+            }}
+          >
+            <span className="text-primary/80 text-xs font-mono uppercase tracking-widest border border-primary/30 rounded-full px-3 py-1 mb-4 inline-block">
+              {category}
+            </span>
+
             <h3 className="text-2xl sm:text-3xl font-bold text-light mb-2">
               {title}
             </h3>
@@ -183,7 +199,7 @@ const StackCard = ({
               {features.map((f) => (
                 <span
                   key={f}
-                  className="text-xs sm:text-sm text-light-70 bg-dark-700 border border-dark-700 rounded-full px-3 py-1.5"
+                  className="text-xs sm:text-sm text-text-muted bg-surface/50 backdrop-blur-sm border border-surface-border rounded-full px-3 py-1.5"
                 >
                   {f}
                 </span>
@@ -198,18 +214,18 @@ const StackCard = ({
 
 const Services = () => {
   return (
-    <section id="services" className="relative bg-dark-900 py-24">
+    <section id="services" className="relative bg-surface py-24">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div
           className="absolute inset-0"
           style={{
             backgroundImage:
-              "radial-gradient(circle at 80% 20%, var(--color-primary-100) 0%, transparent 50%)",
+              "radial-gradient(circle at 80% 20%, var(--color-primary-wash) 0%, transparent 50%)",
           }}
         />
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -217,7 +233,7 @@ const Services = () => {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <span className="inline-block bg-dark-800 border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
+          <span className="inline-block bg-surface-card border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
             What We Do
           </span>
           <MagneticText>
@@ -225,7 +241,7 @@ const Services = () => {
               Digital Marketing <span className="text-primary">Services</span>
             </h2>
           </MagneticText>
-          <p className="text-light-70 text-lg">
+          <p className="text-text-muted text-lg">
             Scroll through — each service stacks as you go.
           </p>
         </motion.div>

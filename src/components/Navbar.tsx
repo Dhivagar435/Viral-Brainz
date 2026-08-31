@@ -52,7 +52,7 @@ const Navbar = () => {
         transition={{ duration: 0.6 }}
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${
           scrolled
-            ? "bg-dark-900/80 backdrop-blur-md border-b border-dark-700 shadow-lg"
+            ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
             : "bg-transparent border-b border-transparent"
         }`}
       >
@@ -66,12 +66,11 @@ const Navbar = () => {
               Viral <span className="text-primary">Brainz</span>
             </motion.div>
 
-            {/* Pill container: dark-800 surface + dark-700 border instead of light/5 + primary/10 — reads as a real surface, not a translucent smear */}
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="hidden md:flex gap-2 items-center bg-dark-800 border border-dark-700 rounded-full px-2 py-2"
+              className="hidden md:flex gap-2 items-center bg-surface-card border border-surface-border rounded-full px-2 py-2"
             >
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace("#", "");
@@ -80,7 +79,7 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
-                        isActive ? "text-dark" : "text-light-70 hover:text-primary"
+                        isActive ? "text-dark" : "text-text-muted hover:text-primary"
                       }`}
                     >
                       {link.name}
@@ -98,12 +97,11 @@ const Navbar = () => {
               })}
             </motion.div>
 
-            {/* CTA: hover now shifts to primary-600, not just a glow shadow */}
             <motion.button
               whileHover={{
                 scale: 1.05,
-                backgroundColor: "var(--color-primary-600)",
-                boxShadow: "0 8px 25px rgba(253, 185, 19, 0.3)",
+                backgroundColor: "var(--color-primary-hover)",
+                boxShadow: "0 8px 25px var(--color-primary-soft)",
               }}
               whileTap={{ scale: 0.95 }}
               className="hidden md:block bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
@@ -129,7 +127,7 @@ const Navbar = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[60] bg-dark-900/95 backdrop-blur-lg md:hidden"
+            className="fixed inset-0 z-[60] bg-surface/95 backdrop-blur-lg md:hidden"
           >
             <div className="flex justify-between items-center px-6 pt-6">
               <div className="text-2xl font-bold text-light">
@@ -171,7 +169,7 @@ const Navbar = () => {
               <motion.button
                 variants={itemVariants}
                 onClick={() => setIsOpen(false)}
-                whileHover={{ backgroundColor: "var(--color-primary-600)" }}
+                whileHover={{ backgroundColor: "var(--color-primary-hover)" }}
                 className="bg-primary text-dark px-8 py-3 rounded-full font-semibold text-lg mt-4"
               >
                 Get Started

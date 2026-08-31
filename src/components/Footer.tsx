@@ -31,7 +31,7 @@ const Footer = () => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="bg-dark-900 text-light py-16 mt-20 border-t border-dark-700"
+      className="bg-surface text-light py-16 mt-20 border-t border-surface-border"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}
@@ -46,7 +46,7 @@ const Footer = () => {
             <h2 className="text-3xl font-bold text-primary mb-2">
               Viral Brainz
             </h2>
-            <p className="text-light-40">
+            <p className="text-text-faint">
               Building digital experiences that drive visibility, engagement,
               and growth.
             </p>
@@ -63,7 +63,7 @@ const Footer = () => {
                   <li key={link}>
                     <Link
                       href="#"
-                      className="text-light-40 hover:text-primary transition-colors"
+                      className="text-text-faint hover:text-primary transition-colors"
                     >
                       {link}
                     </Link>
@@ -75,7 +75,7 @@ const Footer = () => {
         </motion.div>
 
         {/* Divider */}
-        <motion.div className="border-t border-dark-700 my-8" />
+        <motion.div className="border-t border-surface-border my-8" />
 
         {/* Bottom Footer */}
         <motion.div
@@ -84,7 +84,7 @@ const Footer = () => {
           whileInView="visible"
           className="flex flex-col md:flex-row justify-between items-center"
         >
-          <motion.p variants={itemVariants} className="text-light-40">
+          <motion.p variants={itemVariants} className="text-text-faint">
             © 2024 Viral Brainz. All rights reserved.
           </motion.p>
 
@@ -97,9 +97,9 @@ const Footer = () => {
               <motion.a
                 key={social}
                 href="#"
-                whileHover={{ scale: 1.2, color: "#FDB913" }}
+                whileHover={{ scale: 1.2, color: "var(--color-primary)" }}
                 whileTap={{ scale: 0.9 }}
-                className="text-light-40 hover:text-primary transition-colors"
+                className="text-text-faint hover:text-primary transition-colors"
               >
                 {social}
               </motion.a>

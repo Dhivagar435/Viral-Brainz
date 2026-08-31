@@ -16,13 +16,11 @@ interface IconData {
   duration: number;
 }
 
-// points spread around the circle — top/left percentages, both sides used
-// (this is what was missing before — everything was "right" only)
 const icons: IconData[] = [
   { Icon: FaInstagram, label: "Social Media", top: "4%", left: "78%", delay: 0.3, duration: 4.2 },
   { Icon: FaYoutube, label: "YouTube Growth", top: "50%", left: "95%", delay: 1, duration: 4.5 },
-  { Icon: TrendingUp, label: "Paid Ads", top: "84%", left: "76%", delay: 0.5, duration: 5 },   // moved up + right
-  { Icon: Search, label: "SEO", top: "95%", left: "35%", delay: 1.5, duration: 5.5 },           // moved up + right, away from badge corner
+  { Icon: TrendingUp, label: "Paid Ads", top: "84%", left: "76%", delay: 0.5, duration: 5 },
+  { Icon: Search, label: "SEO", top: "95%", left: "35%", delay: 1.5, duration: 5.5 },
   { Icon: Users, label: "Influencer Campaigns", top: "50%", left: "-2%", delay: 1.8, duration: 5.2 },
   { Icon: BarChart3, label: "Analytics", top: "4%", left: "22%", delay: 0.8, duration: 4.8 },
 ];
@@ -39,16 +37,16 @@ const IconCard = ({ Icon, label, top, left, delay, duration }: IconData) => (
     }}
   >
     <motion.div
-      whileHover={{ scale: 1.2, backgroundColor: "var(--color-dark-800)" }}
+      whileHover={{ scale: 1.2, backgroundColor: "var(--color-surface-card)" }}
       animate={{ y: [0, -12, 0] }}
       transition={{ y: { duration, repeat: Infinity, delay, ease: "easeInOut" } }}
-      className="relative bg-dark-800 backdrop-blur-sm border border-dark-700 rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg"
+      className="relative bg-surface-card backdrop-blur-sm border border-surface-border rounded-xl sm:rounded-2xl p-2 sm:p-3 shadow-lg"
       style={{ willChange: "transform" }}
     >
       <Icon className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-primary" />
     </motion.div>
 
-    <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 text-xs font-medium text-light bg-dark-900/90 border border-dark-700 px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">
+    <span className="absolute -bottom-9 left-1/2 -translate-x-1/2 text-xs font-medium text-light bg-surface/90 border border-surface-border px-2 py-1 rounded-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-30">
       {label}
     </span>
   </motion.div>

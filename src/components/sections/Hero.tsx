@@ -10,11 +10,7 @@ import { useState, useEffect } from "react";
 const Hero = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
-  const heroImages = [
-    "/hero-team2.jpg",
-    "/hero-bg-2.jpg",
-    "/hero-bg-1.jpg",
-  ];
+  const heroImages = ["/hero-team2.jpg", "/hero-bg-2.jpg", "/hero-bg-1.jpg"];
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -27,9 +23,8 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="relative min-h-screen bg-dark-900 overflow-hidden flex items-center pt-20 md:pt-0"
+      className="relative min-h-screen bg-surface overflow-hidden flex items-center pt-20 md:pt-0"
     >
-      {/* Radial glow — use the token instead of inline rgba */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -37,11 +32,10 @@ const Hero = () => {
         className="absolute inset-0"
         style={{
           backgroundImage:
-            "radial-gradient(circle at 20% 50%, var(--color-primary-100) 0%, transparent 50%)",
+            "radial-gradient(circle at 20% 50%, var(--color-primary-wash) 0%, transparent 50%)",
         }}
       />
 
-      {/* Static blob - smaller opacity, sits on dark-900 not pure black so it reads as a glow, not a smear */}
       <div className="absolute top-20 right-10 w-40 h-40 sm:w-56 sm:h-56 lg:w-72 lg:h-72 bg-primary rounded-full mix-blend-screen filter blur-3xl opacity-10" />
 
       <motion.div
@@ -71,7 +65,7 @@ const Hero = () => {
           <MagneticText>
             <motion.p
               variants={itemVariants}
-              className="text-base sm:text-lg md:text-xl text-light-70 mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0"
+              className="text-base sm:text-lg md:text-xl text-text-muted mb-8 leading-relaxed max-w-xl mx-auto lg:mx-0"
             >
               From social media and performance marketing to YouTube growth,
               influencer campaigns, SEO, and website development we help
@@ -83,12 +77,11 @@ const Hero = () => {
             variants={itemVariants}
             className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start items-center"
           >
-            {/* Primary CTA: hover now shifts to a deeper gold, not just scale+shadow */}
             <motion.button
               whileHover={{
                 scale: 1.05,
-                backgroundColor: "var(--color-primary-600)",
-                boxShadow: "0 20px 40px rgba(253, 185, 19, 0.35)",
+                backgroundColor: "var(--color-primary-hover)",
+                boxShadow: "0 20px 40px var(--color-primary-glow)",
               }}
               whileTap={{ scale: 0.95 }}
               className="bg-primary text-dark px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 w-full sm:w-auto"
@@ -96,13 +89,12 @@ const Hero = () => {
               Let's Grow Together
             </motion.button>
 
-            {/* Secondary CTA: outline on dark-800 instead of transparent-on-black, gives it a surface */}
             <motion.button
               whileHover={{
                 scale: 1.05,
-                borderColor: "#FDB913",
-                color: "#FDB913",
-                backgroundColor: "var(--color-dark-800)",
+                borderColor: "var(--color-primary)",
+                color: "var(--color-primary)",
+                backgroundColor: "var(--color-surface-card)",
               }}
               whileTap={{ scale: 0.95 }}
               className="border-2 border-primary text-primary px-6 sm:px-8 py-3 sm:py-4 rounded-lg font-bold text-base sm:text-lg transition-all duration-300 w-full sm:w-auto"
@@ -118,9 +110,8 @@ const Hero = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="relative w-full h-80 sm:h-96 lg:h-125"
         >
-          {/* Border now dark-700, not primary/40 — the gold border on a gold-accented page was fighting itself */}
           <div
-            className="relative overflow-hidden shadow-2xl border-4 border-dark-700 w-full h-full"
+            className="relative overflow-hidden shadow-2xl border-4 border-surface-border w-full h-full"
             style={{ borderRadius: "63% 37% 54% 46% / 43% 39% 61% 57%" }}
           >
             {heroImages.map((image, index) => (
@@ -152,7 +143,10 @@ const Hero = () => {
                 key={index}
                 onClick={() => setCurrentImageIndex(index)}
                 animate={{
-                  backgroundColor: currentImageIndex === index ? "#FDB913" : "rgba(253, 185, 19, 0.3)",
+                  backgroundColor:
+                    currentImageIndex === index
+                      ? "var(--color-primary)"
+                      : "var(--color-primary-soft)",
                   scale: currentImageIndex === index ? 1.2 : 1,
                 }}
                 transition={{ duration: 0.3 }}
@@ -167,7 +161,10 @@ const Hero = () => {
             className="absolute bottom-2 sm:-bottom-4 md:-bottom-6 lg:-bottom-8 left-2 sm:left-2 md:-left-4 lg:-left-6 z-30 bg-primary rounded-lg sm:rounded-2xl px-3 sm:px-4 md:px-5 lg:px-6 py-2 sm:py-3 md:py-3 lg:py-4 shadow-lg sm:shadow-xl whitespace-nowrap"
           >
             <p className="text-lg sm:text-xl md:text-2xl lg:text-2xl font-bold text-dark">
-              10+ <span className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium">Years of Growth</span>
+              10+{" "}
+              <span className="text-xs sm:text-sm md:text-sm lg:text-sm font-medium">
+                Years of Growth
+              </span>
             </p>
           </motion.div>
         </motion.div>
@@ -178,7 +175,7 @@ const Hero = () => {
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 left-1/2 -translate-x-1/2 text-center"
       >
-        <p className="text-light-40 text-sm font-medium mb-2">
+        <p className="text-text-faint text-sm font-medium mb-2">
           Scroll to explore
         </p>
         <svg

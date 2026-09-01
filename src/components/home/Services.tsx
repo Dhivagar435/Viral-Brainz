@@ -412,23 +412,26 @@ const Services = () => {
           />
         ))}
       </div>
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5 }}
-        className="text-center mt-8 relative z-20"
-      >
-        <Link
-          href="/services"
-          className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-hover transition-colors duration-300"
-        >
-          Explore All Services
-          <ArrowRight className="w-5 h-5" />
-        </Link>
-      </motion.div>
+   
     </section>
   );
 };
 
 export default Services;
+
+
+  //  <motion.div
+  //       initial={{ opacity: 0, y: 20 }}
+  //       whileInView={{ opacity: 1, y: 0 }}
+  //       viewport={{ once: true }}
+  //       transition={{ duration: 0.5 }}
+  //       className="text-center mt-8 relative z-20"
+  //     >
+  //       <Link
+  //         href="/services"
+  //         className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-hover transition-colors duration-300"
+  //       >
+  //         Explore All Services
+  //         <ArrowRight className="w-5 h-5" />
+  //       </Link>
+  //     </motion.div>

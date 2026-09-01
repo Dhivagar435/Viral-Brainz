@@ -12,19 +12,19 @@ const caseStudies = [
     client: "Blacksheep",
     stat: "225%",
     statLabel: "YouTube subscriber growth",
-    image: "/work/blacksheep.jpg",
+    image: "/services/youtube.png",
   },
   {
     client: "Salliyargal",
     stat: "1M+",
     statLabel: "Trailer views within 48 hours",
-    image: "/work/salliyargal.jpg",
+    image: "/services/email-marketing.png",
   },
   {
     client: "Ponniyin Selvan 2",
     stat: "Global",
     statLabel: "Influencer campaign across India & Singapore",
-    image: "/work/ps2.jpg",
+    image: "/services/movie-promotion.png",
   },
 ];
 

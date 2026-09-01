@@ -170,7 +170,7 @@ const Hero = () => {
         </motion.div>
       </div>
 
-      <motion.div
+      {/* <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
         className="absolute bottom-20 sm:bottom-24 md:bottom-28 lg:bottom-32 left-1/2 -translate-x-1/2 text-center"
@@ -191,7 +191,7 @@ const Hero = () => {
             d="M19 14l-7 7m0 0l-7-7m7 7V3"
           />
         </svg>
-      </motion.div>
+      </motion.div> */}
     </section>
   );
 };

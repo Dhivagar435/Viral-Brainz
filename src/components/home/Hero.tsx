@@ -3,7 +3,7 @@
 import { containerVariants, itemVariants } from "@/src/utils/motion";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import MagneticText from "../MagneticText";
+import MagneticText from "../ui/MagneticText";
 import FloatingIcons from "../FloatingIcons";
 import { useState, useEffect } from "react";
 

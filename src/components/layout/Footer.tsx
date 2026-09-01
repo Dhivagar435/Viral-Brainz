@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { containerVariants, itemVariants } from "../utils/motion";
+import { containerVariants, itemVariants } from "../../utils/motion";
 
 const Footer = () => {
   const footerSections = [
@@ -112,10 +112,6 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-
-
 
 // const services = [
 //   {

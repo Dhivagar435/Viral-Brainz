@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { X, Menu } from "lucide-react";
-import { containerVariants, itemVariants } from "../utils/motion";
+import { containerVariants, itemVariants } from "../../utils/motion";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,8 +13,8 @@ const Navbar = () => {
 
   const navLinks = [
     { name: "Home", href: "#home" },
-    { name: "Services", href: "#services" },
     { name: "About Us", href: "#about-us" },
+    { name: "Services", href: "#services" },
     { name: "Why Choose Us", href: "#why-us" },
     { name: "Contact", href: "#contact" },
   ];
@@ -38,7 +38,7 @@ const Navbar = () => {
           }
         });
       },
-      { rootMargin: "-40% 0px -40% 0px" }
+      { rootMargin: "-40% 0px -40% 0px" },
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -51,10 +51,11 @@ const Navbar = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrolled
             ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
             : "bg-transparent border-b border-transparent"
-          }`}
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -75,11 +76,18 @@ const Navbar = () => {
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.replace("#", "");
                 return (
-                  <motion.div key={link.name} variants={itemVariants} className="relative">
+                  <motion.div
+                    key={link.name}
+                    variants={itemVariants}
+                    className="relative"
+                  >
                     <Link
                       href={link.href}
-                      className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${isActive ? "text-dark" : "text-text-muted hover:text-primary"
-                        }`}
+                      className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                        isActive
+                          ? "text-dark"
+                          : "text-text-muted hover:text-primary"
+                      }`}
                     >
                       {link.name}
                     </Link>
@@ -88,7 +96,11 @@ const Navbar = () => {
                       <motion.div
                         layoutId="activeNavPill"
                         className="absolute inset-0 bg-primary rounded-full"
-                        transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 350,
+                          damping: 30,
+                        }}
                       />
                     )}
                   </motion.div>
@@ -156,8 +168,11 @@ const Navbar = () => {
                     <Link
                       href={link.href}
                       onClick={() => setIsOpen(false)}
-                      className={`text-3xl font-bold transition-colors ${isActive ? "text-primary" : "text-light hover:text-primary"
-                        }`}
+                      className={`text-3xl font-bold transition-colors ${
+                        isActive
+                          ? "text-primary"
+                          : "text-light hover:text-primary"
+                      }`}
                     >
                       {link.name}
                     </Link>

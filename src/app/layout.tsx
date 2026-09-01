@@ -1,17 +1,18 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import Navbar from '../components/Navbar'
-import Footer from '../components/Footer'
+import type { Metadata } from "next";
+import "./globals.css";
+import Navbar from "../components/layout/Navbar";
+import Footer from "../components/layout/Footer";
 
 export const metadata: Metadata = {
-  title: 'Viral Brainz - Digital Growth Agency',
-  description: 'Build brands that people follow. Digital marketing agency for startups & enterprises.',
-}
+  title: "Viral Brainz - Digital Growth Agency",
+  description:
+    "Build brands that people follow. Digital marketing agency for startups & enterprises.",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en">
@@ -21,5 +22,5 @@ export default function RootLayout({
         <Footer />
       </body>
     </html>
-  )
+  );
 }

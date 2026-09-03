@@ -1,9 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Link from "next/link";
-import { ArrowUpRight, Calendar } from "lucide-react";
-import { containerVariants, itemVariants } from "@/src/utils/motion";
+import { ArrowUpRight } from "lucide-react";
 import MagneticText from "../ui/MagneticText";
 
 const posts = [
@@ -24,6 +24,73 @@ const posts = [
   },
 ];
 
+const BlogRow = ({
+  category,
+  title,
+  date,
+  index,
+}: {
+  category: string;
+  title: string;
+  date: string;
+  index: number;
+}) => {
+  const rowRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ["start end", "end start"],
+  });
+
+  const fromX = index % 2 === 0 ? -100 : 100;
+  const rawX = useTransform(scrollYProgress, [0, 0.45, 1], [fromX, 0, 0]);
+  const x = useSpring(rawX, { stiffness: 110, damping: 22, mass: 0.6 });
+
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
+  const opacity = useSpring(rawOpacity, { stiffness: 110, damping: 22 });
+
+  return (
+    <motion.div
+      ref={rowRef}
+      style={{ x, opacity }}
+      className="group relative rounded-2xl overflow-hidden transition-shadow duration-300 hover:shadow-[0_0_40px_-8px_rgba(253,185,19,0.35)]"
+    >
+      {/* fill sweep — pure CSS, driven by the SAME group-hover as the text */}
+      <div
+        className="absolute inset-0 origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+        style={{ backgroundColor: "#FDB913" }}
+      />
+
+      <Link
+        href="/blog"
+        className="relative z-10 flex items-center gap-6 sm:gap-10 py-8 sm:py-10 px-2 sm:px-4"
+      >
+        <span className="text-2xl sm:text-3xl font-mono text-text-faint w-10 sm:w-14 shrink-0 group-hover:text-black/50 transition-colors duration-300">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        <div className="flex-1 min-w-0">
+          <span className="inline-block text-primary group-hover:text-black/70 text-xs font-mono uppercase tracking-widest mb-2 transition-colors duration-300">
+            {category}
+          </span>
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold leading-snug text-light group-hover:text-black transition-colors duration-300">
+            {title}
+          </h3>
+        </div>
+
+        <div className="hidden sm:flex flex-col items-end shrink-0 gap-3">
+          <span className="text-text-faint group-hover:text-black/60 text-sm transition-colors duration-300">
+            {date}
+          </span>
+          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-surface-border group-hover:border-black/30 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+            <ArrowUpRight className="w-4 h-4 text-light group-hover:text-black transition-colors duration-300" />
+          </span>
+        </div>
+      </Link>
+    </motion.div>
+  );
+};
+
 const Blog = () => {
   return (
     <section id="blog" className="relative bg-surface py-24 overflow-hidden">
@@ -35,7 +102,7 @@ const Blog = () => {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -55,37 +122,11 @@ const Blog = () => {
             Ideas and strategy from the team behind the growth.
           </p>
         </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
-        >
-          {posts.map(({ category, title, date }) => (
-            <motion.div
-              key={title}
-              variants={itemVariants}
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-surface-card border border-surface-border rounded-2xl p-8 hover:border-primary/40 transition-colors duration-300 flex flex-col"
-            >
-              <span className="inline-block text-primary text-xs font-mono uppercase tracking-widest border border-primary/30 rounded-full px-3 py-1 mb-5 w-fit">
-                {category}
-              </span>
-
-              <h3 className="text-xl font-bold text-light mb-4 leading-snug flex-1">
-                {title}
-              </h3>
-
-              <div className="flex items-center gap-2 text-text-faint text-sm">
-                <Calendar className="w-4 h-4" />
-                {date}
-              </div>
-            </motion.div>
+        <div className="flex flex-col gap-4 mb-12">
+          {posts.map((post, index) => (
+            <BlogRow key={post.title} index={index} {...post} />
           ))}
-        </motion.div>
+        </div>
 
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -96,7 +137,7 @@ const Blog = () => {
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-hover transition-colors duration-300"
+            className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-tint hover:rounded-full transition-all duration-300"
           >
             Read All Insights
             <ArrowUpRight className="w-5 h-5" />

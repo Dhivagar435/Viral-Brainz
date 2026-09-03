@@ -31,7 +31,7 @@ const Footer = () => {
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 0.6 }}
-      className="bg-surface text-light py-16 mt-20 border-t border-surface-border"
+      className="bg-surface text-light py-16 border-t border-surface-border"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Main Footer Content */}

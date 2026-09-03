@@ -1,149 +1,202 @@
 "use client";
 
-import { useRef } from "react";
-import {
-  motion,
-  useInView,
-  useMotionValue,
-  useTransform,
-  animate,
-} from "framer-motion";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { TrendingUp, Users, Trophy, Sparkles } from "lucide-react";
-import { containerVariants, itemVariants } from "@/src/utils/motion";
-import MagneticText from "../ui/MagneticText";
 import { FaInstagram, FaTwitter } from "react-icons/fa";
+import InfiniteSpiral from "../ui/InfiniteSpiral";
+import MagicRings from "../ui/MagicRings";
+import DepthText from "../ui/DeepthText";
 
-const stats = [
-  {
-    icon: FaInstagram,
-    value: 225,
-    suffix: "%",
-    label: "YouTube subscriber growth for Blacksheep",
-  },
-  {
-    icon: TrendingUp,
-    value: 1,
-    suffix: "M+",
-    label: "Trailer views within 48 hours",
-  },
-  {
-    icon: FaTwitter,
-    value: 1,
-    prefix: "No.",
-    suffix: "",
-    label: "Twitter trends achieved",
-  },
-  { icon: Users, value: 15, suffix: "+", label: "YouTube channels built" },
-  {
-    icon: Trophy,
-    value: 10,
-    suffix: "+",
-    label: "Years of combined growth expertise",
-  },
-  {
-    icon: Sparkles,
-    value: 100,
-    suffix: "+",
-    label: "Successful campaigns across India & Singapore",
-  },
-];
-
-const Counter = ({
-  value,
-  prefix = "",
-  suffix = "",
-}: {
-  value: number;
-  prefix?: string;
-  suffix?: string;
-}) => {
-  const ref = useRef<HTMLSpanElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
-  const count = useMotionValue(0);
-  const rounded = useTransform(count, (latest) => Math.round(latest));
+export default function ResultsSection() {
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (isInView) {
-      const controls = animate(count, value, {
-        duration: 1.5,
-        ease: "easeOut",
-      });
-      return controls.stop;
-    }
-  }, [isInView, value, count]);
+    setIsVisible(true);
+  }, []);
+
+  const stats = [
+    {
+      icon: FaInstagram,
+      value: 225,
+      suffix: "%",
+      label: "YouTube subscriber growth for Blacksheep",
+    },
+    {
+      icon: TrendingUp,
+      value: 1,
+      suffix: "M+",
+      label: "Trailer views within 48 hours",
+    },
+    {
+      icon: FaTwitter,
+      value: 1,
+      prefix: "No.",
+      suffix: "",
+      label: "Twitter trends achieved",
+    },
+    {
+      icon: Users,
+      value: 15,
+      suffix: "+",
+      label: "YouTube channels built",
+    },
+    {
+      icon: Trophy,
+      value: 10,
+      suffix: "+",
+      label: "Years of combined growth expertise",
+    },
+    {
+      icon: Sparkles,
+      value: 100,
+      suffix: "+",
+      label: "Successful campaigns across India & Singapore",
+    },
+  ];
 
   return (
-    <span ref={ref}>
-      {prefix}
-      <motion.span>{rounded}</motion.span>
-      {suffix}
-    </span>
-  );
-};
+    <section className="relative min-h-screen bg-[#0A0A0A] py-20 px-8 overflow-hidden">
+      {/* MAGIC RINGS BACKGROUND */}
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <MagicRings
+          color="#FDB913"
+          colorTwo="#FDD873"
+          ringCount={6}
+          speed={0.8}
+          attenuation={10}
+          lineThickness={1.5}
+          baseRadius={0.35}
+          radiusStep={0.1}
+          scaleRate={0.08}
+          opacity={0.15}
+          blur={2}
+          noiseAmount={0.05}
+          rotation={0}
+          ringGap={1.5}
+          fadeIn={0.7}
+          fadeOut={0.5}
+          followMouse={false}
+          mouseInfluence={0}
+          hoverScale={1}
+          parallax={0}
+          clickBurst={false}
+        />
+      </div>
 
-const Results = () => {
-  return (
-    <section id="results" className="relative bg-surface py-24 overflow-hidden">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 50% 0%, var(--color-primary-wash) 0%, transparent 60%)",
-        }}
-      />
+      {/* CONTENT OVERLAY */}
+      <div className="relative z-10">
+        {/* CENTERED HEADING */}
+        <div className="text-center mb-20">
+        <DepthText
+                 text="ACHIEVEMENTS"
+                 layers={34}
+                 depth={2.4}
+                 faceColor="var(--color-light)"
+                 depthColor="var(--color-primary)"
+                 tilt={7.5}
+                 pointerTracking
+                 smoothing={0.14}
+                 perspective={900}
+                 autoOrbit
+                 orbitSpeed={0.35}
+                 fontSize="clamp(3rem, 12vw, 7rem)"
+                 fontWeight={900}
+                 shadow
+               />
+        </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center max-w-2xl mx-auto mb-16"
-        >
-          <span className="inline-block bg-surface-card border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-            Results
-          </span>
-          <MagneticText>
-            <h2 className="text-4xl md:text-5xl font-bold text-light mb-4">
-              Numbers That <span className="text-primary">Speak</span>
-            </h2>
-          </MagneticText>
-          <p className="text-text-muted text-lg">
-            Real results, driven by strategy and creative that performs.
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-        >
-
-          
-          {stats.map(({ icon: Icon, value, prefix, suffix, label }) => (
-            <motion.div
-              key={label}
-              variants={itemVariants}
-              whileHover={{ y: -6 }}
-              transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              className="bg-surface-card border border-surface-border rounded-2xl p-8 hover:border-primary/40 transition-colors duration-300"
+        {/* TWO COLUMN LAYOUT */}
+        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-20 items-center">
+          {/* LEFT SIDE - TEXT */}
+          <div className="space-y-8">
+            <p
+              className={`text-lg leading-relaxed transition-all duration-1000 delay-200 text-white/70 max-w-sm ${
+                isVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-12"
+              }`}
             >
-              <div className="w-12 h-12 rounded-xl bg-surface border border-surface-border flex items-center justify-center mb-5">
-                <Icon className="w-6 h-6 text-primary" />
+              Strategy meets creativity to deliver measurable results. Our
+              approach combines data-driven insights with bold creative execution,
+              ensuring every project drives real business impact and meaningful
+              growth for our partners.
+            </p>
+
+            {/* STATS COUNTER */}
+            <div
+              className={`pt-8 border-t border-[#1F1F1F] transition-all duration-1000 delay-300 ${
+                isVisible
+                  ? "opacity-100 translate-x-0"
+                  : "opacity-0 -translate-x-12"
+              }`}
+            >
+              <div className="flex items-baseline gap-3">
+                <span
+                  className="text-5xl font-black"
+                  style={{ color: "#FDB913" }}
+                >
+                  500+
+                </span>
+                <span className="text-sm text-white/50">
+                  Projects delivered successfully
+                </span>
               </div>
-              <p className="text-4xl font-bold text-primary mb-2">
-                <Counter value={value} prefix={prefix} suffix={suffix} />
-              </p>
-              <p className="text-text-muted leading-relaxed">{label}</p>
-            </motion.div>
-          ))}
-        </motion.div>
+            </div>
+          </div>
+
+          {/* RIGHT SIDE - SPIRAL WITH ICONS */}
+          <div
+            className={`transition-all duration-1000 delay-400 ${
+              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
+          >
+            <div
+              style={{
+                height: "600px",
+                position: "relative",
+                overflow: "hidden",
+              }}
+            >
+              <InfiniteSpiral
+                items={stats}
+                animationMode="auto"
+                speed={0.55}
+                radius={170}
+                cardWidth={160}
+                cardHeight={160}
+                verticalSpacing={70}
+                perspective={1000}
+                cardRadius={10}
+                centerScale={1.2}
+                edgeBlur={6}
+                cardsPerTurn={7}
+                pauseOnHover
+                direction="up"
+                rotation={0}
+                cardTilt={0}
+                edgeFade={0.3}
+                renderCard={(item) => (
+                  <div className="flex flex-col items-center justify-center h-full bg-[#141414] rounded-lg border border-[#1F1F1F] p-4 hover:border-[#FDB913] transition-colors gap-2">
+                    <div className="text-2xl" style={{ color: "#FDB913" }}>
+                      {item.icon ? <item.icon size={28} /> : null}
+                    </div>
+                    <div className="text-center">
+                      <div className="text-xs font-semibold text-white">
+                        {item.prefix}
+                        {item.value}
+                        {item.suffix}
+                      </div>
+                      <div className="text-xs text-white/50 mt-1">
+                        {item.label}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              />
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   );
-};
-
-export default Results;
+}

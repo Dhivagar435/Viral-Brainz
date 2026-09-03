@@ -53,7 +53,7 @@ const AboutUs = () => {
 
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* label */}
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -64,7 +64,7 @@ const AboutUs = () => {
           <span className="text-primary text-sm font-semibold uppercase tracking-wide">
             About Company
           </span>
-        </motion.div>
+        </motion.div> */}
 
         <motion.h2
           variants={waveContainer}

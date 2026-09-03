@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import Image from "next/image";
 import { X, Menu } from "lucide-react";
 import { containerVariants, itemVariants } from "../../utils/motion";
 
@@ -60,13 +61,22 @@ const Navbar = () => {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="text-2xl md:text-3xl font-bold text-light"
-            >
-              Viral <span className="text-primary">Brainz</span>
-            </motion.div>
+            <Link href="#home" aria-label="Viral Brainz home">
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-xl overflow-hidden shrink-0"
+              >
+                <Image
+                  src="/logo/viral-brainz-logo.png"
+                  alt="Viral Brainz"
+                  fill
+                  sizes="56px"
+                  className="object-cover"
+                  priority
+                />
+              </motion.div>
+            </Link>
 
             <motion.div
               variants={containerVariants}
@@ -117,7 +127,7 @@ const Navbar = () => {
               whileTap={{ scale: 0.95 }}
               className="hidden md:block bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
             >
-              Get Started
+              Get in Touch
             </motion.button>
 
             <motion.button
@@ -141,8 +151,14 @@ const Navbar = () => {
             className="fixed inset-0 z-[60] bg-surface/95 backdrop-blur-lg md:hidden"
           >
             <div className="flex justify-between items-center px-6 pt-6">
-              <div className="text-2xl font-bold text-light">
-                Viral <span className="text-primary">Brainz</span>
+              <div className="relative w-12 h-12 rounded-xl overflow-hidden">
+                <Image
+                  src="/logo/viral-brainz-logo.png"
+                  alt="Viral Brainz"
+                  fill
+                  sizes="48px"
+                  className="object-cover"
+                />
               </div>
 
               <motion.button

@@ -1,437 +1,171 @@
 "use client";
 import { useRef } from "react";
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  MotionValue,
-} from "framer-motion";
+import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
+import DepthText from "../ui/DeepthText";
 
-const services = [
-  {
-    image: "/services/seo1.png",
-    category: "Growth",
-    title: "SEO",
-    outcome: "Rank where your customers search",
-    description:
-      "We optimize your site's technical foundation and content strategy so search engines trust you and customers find you first, not your competitors.",
-    features: [
-      "Technical Audits",
-      "Keyword Strategy",
-      "Link Building",
-    ],
-  },
+interface ServiceItem {
+  image: string;
+  label: string;
+  description: string;
+  link: string;
+  size: "small" | "large" | "wide";
+}
 
-  {
-    image: "/services/social-media-management-1.png",
-    category: "Content",
-    title: "Social Media Management",
-    outcome: "Consistent daily presence, zero guesswork",
-    description:
-      "We build a consistent social presence with strategic content, creative direction, and community management designed to keep your brand visible.",
-    features: [
-      "Content Strategy",
-      "Community Management",
-      "Cross Platform",
-    ],
-  },
-
-  {
-    image: "/services/website-development-1.png",
-    category: "Tech",
-    title: "Website Development",
-    outcome: "Built to convert, not just to look good",
-    description:
-      "We create fast, responsive, conversion-focused websites that combine strong design with clean development and SEO-ready architecture.",
-    features: [
-      "Responsive Design",
-      "SEO Ready",
-      "Fast Performance",
-    ],
-  },
+const services: ServiceItem[] = [
+  { image: "/services/seo.png", label: "SEO", description: "Rank where your customers search", link: "/services", size: "large" },
+  { image: "/services/social-media-management.png", label: "Social Media Management", description: "Consistent presence, zero guesswork", link: "/services", size: "small" },
+  { image: "/services/web.png", label: "Website Development", description: "Built to convert, not just look good", link: "/services", size: "small" },
+  { image: "/services/youtube-growth.png", label: "Youtube Growth", description: "Grow subscribers that actually watch", link: "/services", size: "wide" },
 ];
 
-const StackCard = ({
+const BentoTile = ({
   image,
-  category,
-  title,
-  outcome,
+  label,
   description,
-  features,
+  link,
+  size,
   index,
-  total,
-  progress,
-}: {
-  image: string;
-  category: string;
-  title: string;
-  outcome: string;
-  description: string;
-  features: string[];
-  index: number;
-  total: number;
-  progress: MotionValue<number>;
-}) => {
-  const start = index / total;
-  const end = (index + 1) / total;
+}: ServiceItem & { index: number }) => {
+  const tileRef = useRef<HTMLDivElement>(null);
 
-  const springConfig = {
-    stiffness: 120,
-    damping: 26,
-    mass: 0.6,
-  };
+  const spanClass =
+    size === "large"
+      ? "md:col-span-2 md:row-span-2"
+      : size === "wide"
+      ? "md:col-span-2 md:row-span-1"
+      : "md:col-span-1 md:row-span-1";
 
-  const isFirst = index === 0;
+  const heightClass = size === "large" ? "h-[340px] md:h-full" : "h-[220px] md:h-full";
 
-  const rawY = useTransform(
-    progress,
-    isFirst ? [-1, -0.99] : [start, start + 0.5 / total],
-    [80, 0],
+  // scroll progress specific to this tile: 0 = entering bottom of viewport, 1 = exiting top
+  const { scrollYProgress } = useScroll({
+    target: tileRef,
+    offset: ["start end", "end start"],
+  });
+
+  // alternate entrance side: even index from left, odd index from right
+  const fromX = index % 2 === 0 ? -120 : 120;
+  const rawX = useTransform(scrollYProgress, [0, 0.45, 1], [fromX, 0, 0]);
+  const x = useSpring(rawX, { stiffness: 110, damping: 22, mass: 0.6 });
+
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.35], [0, 1]);
+  const opacity = useSpring(rawOpacity, { stiffness: 110, damping: 22 });
+
+  // subtle image parallax drift while the tile is in view
+  const imageY = useSpring(
+    useTransform(scrollYProgress, [0, 1], [-24, 24]),
+    { stiffness: 100, damping: 24, mass: 0.6 }
   );
-
-  const y = useSpring(rawY, springConfig);
-
-  const rawOpacity = useTransform(
-    progress,
-    isFirst ? [-1, -0.99] : [start, start + 0.3 / total],
-    [0, 1],
-  );
-
-  const opacity = useSpring(rawOpacity, springConfig);
-
-  const recedeEnd =
-    index === total - 1 ? 1.0001 : Math.min(end + 0.6 / total, 1);
-
-  const rawScale = useTransform(progress, [end, recedeEnd], [1, 0.92]);
-
-  const scale = useSpring(rawScale, springConfig);
-
-  const rawDim = useTransform(progress, [end, recedeEnd], [1, 0.5]);
-
-  const dim = useSpring(rawDim, springConfig);
-
-  const brightness = useTransform(dim, (d) => `brightness(${d})`);
 
   return (
     <motion.div
-      style={{
-        y,
-        opacity,
-        scale,
-        filter: brightness,
-      }}
-      className="sticky top-20 sm:top-24 w-full px-4 sm:px-6"
+      ref={tileRef}
+      style={{ x, opacity }}
+      className={`group relative overflow-hidden rounded-3xl border border-surface-border ${spanClass} ${heightClass}`}
     >
-      <div
-        className="
-          relative
-          max-w-6xl
-          mx-auto
-          min-h-[500px]
-          md:min-h-[520px]
-          rounded-[28px]
-          overflow-hidden
-          border
-          border-white/10
-          bg-[#111111]
-          shadow-[0_20px_80px_rgba(0,0,0,0.35)]
-          grid
-          grid-cols-1
-          md:grid-cols-[1.05fr_0.95fr]
-        "
-      >
-        {/* LEFT CONTENT */}
-        <div
-          className="
-            order-2
-            md:order-1
-            flex
-            flex-col
-            justify-center
-            p-7
-            sm:p-9
-            md:p-11
-            lg:p-14
-          "
+      <Link href={link} className="absolute inset-0 block">
+        <motion.div
+          className="absolute -inset-y-6 inset-x-0"
+          style={{ y: imageY }}
         >
-          {/* NUMBER */}
-          <div className="mb-6">
-            <span
-              className="
-                inline-flex
-                items-center
-                justify-center
-                w-10
-                h-10
-                rounded-full
-                border
-                border-white/15
-                text-white/40
-                text-xs
-                font-mono
-              "
-            >
-              {String(index + 1).padStart(2, "0")}
-            </span>
-          </div>
-
-          {/* TITLE */}
-          <h3
-            className="
-              text-4xl
-              sm:text-5xl
-              lg:text-[54px]
-              leading-[0.95]
-              font-black
-              tracking-tight
-              uppercase
-              text-white
-              max-w-xl
-            "
-          >
-            {title}
-          </h3>
-
-          {/* TAGS */}
-          <div className="flex flex-wrap gap-2 mt-6">
-            {features.map((feature) => (
-              <span
-                key={feature}
-                className="
-                  inline-flex
-                  items-center
-                  rounded-full
-                  border
-                  border-white/15
-                  px-4
-                  py-2
-                  text-xs
-                  sm:text-sm
-                  text-white/80
-                  bg-white/[0.02]
-                "
-              >
-                {feature}
-              </span>
-            ))}
-          </div>
-
-          {/* OUTCOME */}
-          <p
-            className="
-              mt-7
-              text-base
-              sm:text-lg
-              font-medium
-              text-primary
-              max-w-lg
-            "
-          >
-            {outcome}
-          </p>
-
-          {/* DESCRIPTION */}
-          <p
-            className="
-              mt-4
-              text-sm
-              sm:text-base
-              leading-7
-              text-white/50
-              max-w-lg
-            "
-          >
-            {description}
-          </p>
-
-          {/* BUTTON */}
-          <div className="mt-8">
-            <Link
-              href="/services"
-              className="
-                group
-                inline-flex
-                items-center
-                gap-4
-                rounded-full
-                border
-                border-white/15
-                px-6
-                py-3
-                text-sm
-                sm:text-base
-                font-semibold
-                text-white
-                transition-all
-                duration-300
-                hover:bg-white
-                hover:text-black
-              "
-            >
-              <span>Discover More</span>
-
-              <span
-                className="
-                  flex
-                  items-center
-                  justify-center
-                  w-8
-                  h-8
-                  rounded-full
-                  border
-                  border-white/20
-                  transition-transform
-                  duration-300
-                  group-hover:translate-x-1
-                  group-hover:border-black/20
-                "
-              >
-                <ArrowRight className="w-4 h-4" />
-              </span>
-            </Link>
-          </div>
-        </div>
-
-        {/* RIGHT IMAGE */}
-        <div
-          className="
-            order-1
-            md:order-2
-            relative
-            min-h-[280px]
-            sm:min-h-[340px]
-            md:min-h-full
-            p-4
-            sm:p-5
-            md:p-6
-          "
-        >
-          <div
-            className="
-              relative
-              h-full
-              min-h-[250px]
-              sm:min-h-[310px]
-              md:min-h-full
-              overflow-hidden
-              rounded-2xl
-              sm:rounded-[20px]
-            "
+          <motion.div
+            className="relative w-full h-full"
+            whileHover={{ scale: 1.08 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
           >
             <Image
               src={image}
-              alt={title}
+              alt={label}
               fill
-              sizes="(max-width: 768px) 100vw, 45vw"
-              className="
-                object-cover
-                transition-transform
-                duration-700
-                hover:scale-105
-              "
+              sizes="(max-width: 768px) 100vw, 50vw"
+              className="object-cover"
             />
+          </motion.div>
+        </motion.div>
 
-            {/* IMAGE OVERLAY */}
-            <div
-              className="
-                absolute
-                inset-0
-                bg-black/5
-                transition-colors
-                duration-500
-                hover:bg-black/0
-              "
-            />
+        <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/40 to-transparent opacity-80 group-hover:opacity-95 transition-opacity duration-500" />
+
+        <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-8">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-xl md:text-2xl font-bold text-light mb-1 group-hover:text-primary transition-colors duration-300">
+                {label}
+              </h3>
+              <motion.p
+                initial={{ opacity: 0, height: 0 }}
+                whileHover={{ opacity: 1, height: "auto" }}
+                className="text-text-muted text-sm overflow-hidden"
+              >
+                {description}
+              </motion.p>
+            </div>
+
+            <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-white/20 text-light opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300">
+              <ArrowUpRight className="w-4 h-4" />
+            </span>
           </div>
         </div>
-      </div>
+
+        <span className="absolute top-5 left-5 text-xs font-mono text-white/60 border border-white/15 rounded-full w-8 h-8 flex items-center justify-center backdrop-blur-sm">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+      </Link>
     </motion.div>
   );
 };
 
 const Services = () => {
-  const headingRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  // heading zoom scroll tracker
-  const { scrollYProgress: headingProgress } = useScroll({
-    target: headingRef,
-    offset: ["start end", "center center", "end start"],
-  });
-  const headingScale = useTransform(
-    headingProgress,
-    [0, 0.5, 1],
-    [0.5, 1.2, 0.6],
-  );
-  const headingOpacity = useTransform(headingProgress, [0, 0.5, 1], [0, 1, 0]);
-  const smoothScale = useSpring(headingScale, {
-    stiffness: 100,
-    damping: 20,
-    mass: 0.5,
-  });
-  const smoothOpacity = useSpring(headingOpacity, {
-    stiffness: 100,
-    damping: 20,
-    mass: 0.5,
-  });
-  // card stacking scroll tracker (this is the one StackCard needs)
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
   return (
     <section id="services" className="relative bg-surface py-28 sm:py-32 overflow-hidden">
-      {/* ... */}
       <motion.div
-        ref={headingRef}
-        style={{ scale: smoothScale, opacity: smoothOpacity }}
-        className="text-center mb-16"
+        initial={{ opacity: 0, scale: 0.8 }}
+        whileInView={{ opacity: 1, scale: 1 }}
+        viewport={{ once:false, amount: 0.4 }}
+        transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        className="flex justify-center mb-16"
       >
-        <h2 className="text-4xl md:text-6xl font-bold text-light mb-4">
-          SERVICES
-        </h2>
+        <DepthText
+          text="SERVICES"
+          layers={34}
+          depth={2.4}
+          faceColor="var(--color-light)"
+          depthColor="var(--color-primary)"
+          tilt={7.5}
+          pointerTracking
+          smoothing={0.14}
+          perspective={900}
+          autoOrbit
+          orbitSpeed={0.35}
+          fontSize="clamp(3rem, 12vw, 7rem)"
+          fontWeight={900}
+          shadow
+        />
       </motion.div>
 
-      <div
-        ref={containerRef}
-        className="relative"
-        style={{ height: `${services.length * 75}vh` }}
-      >
-        {services.map((service, index) => (
-          <StackCard
-            key={service.title}
-            {...service}
-            index={index}
-            total={services.length}
-            progress={scrollYProgress}
-          />
-        ))}
+      <div className="px-4 sm:px-8 md:px-12 lg:px-16 xl:px-24 max-w-[1500px] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-4 md:auto-rows-[220px] gap-5">
+          {services.map((service, index) => (
+            <BentoTile key={service.label} {...service} index={index} />
+          ))}
+        </div>
+
+        <div className="mt-12 flex justify-center">
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-3 rounded-full border border-primary bg-primary px-8 py-4 text-base font-bold text-dark shadow-[0_0_25px_var(--color-primary-glow)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover hover:shadow-[0_0_35px_var(--color-primary-glow)]"
+          >
+            <span>View All Services</span>
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-dark text-primary transition-transform duration-300 group-hover:translate-x-1">
+              <ArrowRight size={18} strokeWidth={2.5} />
+            </span>
+          </Link>
+        </div>
       </div>
-   
     </section>
   );
 };
 
 export default Services;
-
-
-  //  <motion.div
-  //       initial={{ opacity: 0, y: 20 }}
-  //       whileInView={{ opacity: 1, y: 0 }}
-  //       viewport={{ once: true }}
-  //       transition={{ duration: 0.5 }}
-  //       className="text-center mt-8 relative z-20"
-  //     >
-  //       <Link
-  //         href="/services"
-  //         className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-hover transition-colors duration-300"
-  //       >
-  //         Explore All Services
-  //         <ArrowRight className="w-5 h-5" />
-  //       </Link>
-  //     </motion.div>

@@ -4,112 +4,95 @@ import { useRef } from "react";
 import {
   motion,
   useMotionValue,
+  useMotionTemplate,
   useTransform,
   useSpring,
   useScroll,
   Variants,
 } from "framer-motion";
-import { Compass, PenTool, BarChart3, Layers, UserCheck } from "lucide-react";
-import { containerVariants } from "@/src/utils/motion";
+import { Compass, PenTool, BarChart3, Layers, UserCheck, ArrowUpRight } from "lucide-react";
 import MagneticText from "../ui/MagneticText";
 
 const reasons = [
-  {
-    icon: Compass,
-    title: "Strategy First",
-    description: "Every campaign begins with business goals not assumptions.",
-  },
-  {
-    icon: PenTool,
-    title: "Creative That Performs",
-    description: "Content designed to stop scrolling and start conversations.",
-  },
-  {
-    icon: BarChart3,
-    title: "Data Driven",
-    description:
-      "Every decision is backed by insights and measurable performance.",
-  },
-  {
-    icon: Layers,
-    title: "End-to-End Solutions",
-    description: "Everything your digital presence needs under one roof.",
-  },
-  {
-    icon: UserCheck,
-    title: "Dedicated Experts",
-    description: "A passionate team focused on delivering consistent results.",
-  },
+  { icon: Compass, title: "Strategy First", description: "Every campaign begins with business goals not assumptions." },
+  { icon: PenTool, title: "Creative That Performs", description: "Content designed to stop scrolling and start conversations." },
+  { icon: BarChart3, title: "Data Driven", description: "Every decision is backed by insights and measurable performance." },
+  { icon: Layers, title: "End-to-End Solutions", description: "Everything your digital presence needs under one roof." },
+  { icon: UserCheck, title: "Dedicated Experts", description: "A passionate team focused on delivering consistent results." },
 ];
 
-const fallVariants: Variants = {
-  hidden: { y: -150, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: { type: "spring", stiffness: 100, damping: 12, mass: 0.8 },
-  },
-};
-
-// tilt card: tracks mouse position, rotates card in 3D toward cursor
-const TiltCard = ({
+const ReasonRow = ({
+  index,
   icon: Icon,
   title,
   description,
 }: {
+  index: number;
   icon: React.ElementType;
   title: string;
   description: string;
 }) => {
-  const ref = useRef<HTMLDivElement>(null);
+  const rowRef = useRef<HTMLDivElement>(null);
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  const rotateX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), {
-    stiffness: 200,
-    damping: 20,
-  });
-  const rotateY = useSpring(useTransform(mouseX, [-0.5, 0.5], [-10, 10]), {
-    stiffness: 200,
-    damping: 20,
-  });
-
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    const rect = ref.current?.getBoundingClientRect();
+    const rect = rowRef.current?.getBoundingClientRect();
     if (!rect) return;
-    mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
-    mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
+    mouseX.set(e.clientX - rect.left);
+    mouseY.set(e.clientY - rect.top);
   };
 
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
+  const spotlight = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, var(--color-primary-wash), transparent 70%)`;
+
+  // SCROLL-LINKED horizontal drift, tracked to THIS row's own position in the viewport
+  const { scrollYProgress } = useScroll({
+    target: rowRef,
+    offset: ["start end", "end start"], // row enters from bottom, tracked until it exits top
+  });
+
+  // alternate direction per row: even rows drift left->right, odd rows right->left
+  const fromX = index % 2 === 0 ? -80 : 80;
+  const rawX = useTransform(scrollYProgress, [0, 0.5, 1], [fromX, 0, -fromX * 0.3]);
+  const x = useSpring(rawX, { stiffness: 120, damping: 24, mass: 0.5 });
+
+  const rawOpacity = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
+  const opacity = useSpring(rawOpacity, { stiffness: 120, damping: 24 });
 
   return (
     <motion.div
-      variants={fallVariants}
-      ref={ref}
+      ref={rowRef}
+      style={{ x, opacity }}
       onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ rotateX, rotateY, transformPerspective: 800 }}
-      className="bg-surface-card border border-surface-border rounded-2xl p-8 hover:border-primary/40 transition-colors duration-300"
+      className="group relative border-b border-surface-border overflow-hidden"
     >
       <motion.div
-        whileHover={{ rotate: 12, scale: 1.1 }}
-        transition={{ type: "spring", stiffness: 300 }}
-        style={{ transform: "translateZ(30px)" }}
-        className="w-12 h-12 rounded-xl bg-surface border border-surface-border flex items-center justify-center mb-5"
-      >
-        <Icon className="w-6 h-6 text-primary" />
-      </motion.div>
-      <h3
-        className="text-xl font-bold text-light mb-2"
-        style={{ transform: "translateZ(20px)" }}
-      >
-        {title}
-      </h3>
-      <p className="text-text-muted leading-relaxed">{description}</p>
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
+        style={{ background: spotlight }}
+      />
+
+      <div className="relative z-10 flex items-center gap-6 sm:gap-10 py-8 sm:py-10 px-2 sm:px-4">
+        <span className="text-2xl sm:text-3xl font-mono text-text-faint w-10 sm:w-14 shrink-0">
+          {String(index + 1).padStart(2, "0")}
+        </span>
+
+        <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full border border-surface-border flex items-center justify-center shrink-0 group-hover:border-primary/50 group-hover:bg-primary/10 transition-colors duration-500">
+          <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+        </div>
+
+        <div className="flex-1 min-w-0">
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-light group-hover:text-primary transition-colors duration-300 mb-1">
+            {title}
+          </h3>
+          <p className="text-text-muted text-sm sm:text-base leading-relaxed max-w-xl">
+            {description}
+          </p>
+        </div>
+
+        <span className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full border border-surface-border opacity-0 group-hover:opacity-100 -translate-x-2 group-hover:translate-x-0 transition-all duration-300 shrink-0">
+          <ArrowUpRight className="w-4 h-4 text-primary" />
+        </span>
+      </div>
     </motion.div>
   );
 };
@@ -123,11 +106,7 @@ const WhyChooseUs = () => {
   const glowX = useTransform(scrollYProgress, [0, 1], ["70%", "30%"]);
 
   return (
-    <section
-      ref={sectionRef}
-      id="why-us"
-      className="relative bg-surface py-24 overflow-hidden"
-    >
+    <section ref={sectionRef} id="why-us" className="relative bg-surface py-24 overflow-hidden">
       <motion.div
         className="absolute inset-0"
         style={{
@@ -137,7 +116,7 @@ const WhyChooseUs = () => {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -150,29 +129,16 @@ const WhyChooseUs = () => {
           </span>
           <MagneticText>
             <h2 className="text-4xl md:text-5xl font-bold text-light mb-4">
-              Why Brands Choose{" "}
-              <span className="text-primary">Viral Brainz?</span>
+              Why Brands Choose <span className="text-primary">Viral Brainz?</span>
             </h2>
           </MagneticText>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: false, amount: 0.2 }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
-          style={{ perspective: 1000 }}
-        >
-          {reasons.map(({ icon, title, description }) => (
-            <TiltCard
-              key={title}
-              icon={icon}
-              title={title}
-              description={description}
-            />
+        <div className="border-t border-surface-border">
+          {reasons.map((reason, index) => (
+            <ReasonRow key={reason.title} index={index} {...reason} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

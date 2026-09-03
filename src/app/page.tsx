@@ -7,6 +7,7 @@ import WhyChooseUs from "../components/home/WhyChooseUs";
 import OurWork from "../components/home/OurWork";
 import Blog from "../components/home/Blog";
 import Contact from "../components/home/Contact";
+
 const Home = () => {
   return (
     <div>

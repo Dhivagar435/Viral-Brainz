@@ -1,17 +1,20 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
-// swap these with actual client logo files once you have them
 const clients = [
-  { name: "Blacksheep", logo: "/clients/blacksheep.jpg" },
-  { name: "Salliyargal", logo: "/about/team-2.jpg" },
-  { name: "Ponniyin Selvan 2", logo: "/clients/blacksheep.jpg" },
-  { name: "Ariyavan", logo: "/about/team-1.jpg" },
+  { name: "Blacksheep", logo: "/clients/client-1.webp" },
+  { name: "Salliyargal", logo: "/clients/client-2.webp" },
+  { name: "Ponniyin Selvan 2", logo: "/clients/client-3.webp" },
+  { name: "Ariyavan", logo: "/clients/client-4.webp" },
 ];
 
 const Clients = () => {
-  // duplicate the array so the marquee loops seamlessly
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+
   const loopedClients = [...clients, ...clients, ...clients];
 
   return (
@@ -33,25 +36,25 @@ const Clients = () => {
         </motion.div>
       </div>
 
-      {/* full-bleed marquee, edges fade out */}
       <div className="relative">
         <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-surface to-transparent z-10" />
         <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-surface to-transparent z-10" />
 
         <motion.div
           className="flex gap-16 items-center"
-          animate={{ x: ["0%", "-50%"] }}
+          animate={mounted ? { x: ["0%", "-50%"] } : {}}
           transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
         >
           {loopedClients.map((client, i) => (
             <div
               key={i}
-              className="shrink-0 w-40 h-24 rounded-xl bg-light flex items-center justify-center p-4 hover:scale-105 transition-transform duration-300"
+              className="relative shrink-0 w-40 h-24 rounded-xl bg-surface-card border border-surface-border flex items-center justify-center p-4 hover:scale-105 transition-transform duration-300"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
+              <Image
                 src={client.logo}
                 alt={client.name}
+                width={120}
+                height={64}
                 className="max-w-full max-h-full object-contain"
               />
             </div>

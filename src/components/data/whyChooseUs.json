@@ -1,0 +1,27 @@
+[
+    {
+        "icon": "Compass",
+        "title": "Strategy First",
+        "description": "Every campaign begins with business goals not assumptions."
+    },
+    {
+        "icon": " PenTool",
+        " title": "Creative That Performs",
+        "description": "Content designed to stop scrolling and start conversations."
+    },
+    {
+        "icon": "BarChart3",
+        "title": "Data Driven",
+        "description": "Every decision is backed by insights and measurable performance."
+    },
+    {
+        "icon": "Layers",
+        "title": "End-to-End Solutions",
+        "description": "Everything your digital presence needs under one roof."
+    },
+    {
+        "icon": "UserCheck",
+        "title": "Dedicated Experts",
+        "description": "A passionate team focused on delivering consistent results."
+    }
+]

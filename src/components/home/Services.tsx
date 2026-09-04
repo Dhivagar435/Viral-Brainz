@@ -15,10 +15,10 @@ interface ServiceItem {
 }
 
 const services: ServiceItem[] = [
-  { image: "/services/seo.png", label: "SEO", description: "Rank where your customers search", link: "/services", size: "large" },
-  { image: "/services/social-media-management.png", label: "Social Media Management", description: "Consistent presence, zero guesswork", link: "/services", size: "small" },
-  { image: "/services/web.png", label: "Website Development", description: "Built to convert, not just look good", link: "/services", size: "small" },
-  { image: "/services/youtube-growth.png", label: "Youtube Growth", description: "Grow subscribers that actually watch", link: "/services", size: "wide" },
+  { image: "/services/seo.jpg", label: "SEO", description: "Rank where your customers search", link: "/services", size: "large" },
+  { image: "/services/social-media-management.jpg", label: "Social Media Management", description: "Consistent presence, zero guesswork", link: "/services", size: "small" },
+  { image: "/services/website-development.jpg", label: "Website Development", description: "Built to convert, not just look good", link: "/services", size: "small" },
+  { image: "/services/youtube-growth.jpg", label: "Youtube Growth", description: "Grow subscribers that actually watch", link: "/services", size: "wide" },
 ];
 
 const BentoTile = ({

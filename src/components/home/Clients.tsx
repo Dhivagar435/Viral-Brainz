@@ -48,15 +48,16 @@ const Clients = () => {
           {loopedClients.map((client, i) => (
             <div
               key={i}
-              className="relative shrink-0 w-40 h-24 rounded-xl bg-surface-card border border-surface-border flex items-center justify-center p-4 hover:scale-105 transition-transform duration-300"
+              className="relative shrink-0 w-24 h-24 rounded-full bg-white border border-surface-border flex items-center justify-center overflow-hidden hover:scale-105 transition-transform duration-300"
             >
-              <Image
-                src={client.logo}
-                alt={client.name}
-                width={120}
-                height={64}
-                className="max-w-full max-h-full object-contain"
-              />
+              <div className="relative w-14 h-14">
+                <Image
+                  src={client.logo}
+                  alt={client.name}
+                  fill
+                  className="object-contain"
+                />
+              </div>
             </div>
           ))}
         </motion.div>

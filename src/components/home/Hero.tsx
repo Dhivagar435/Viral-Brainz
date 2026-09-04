@@ -39,7 +39,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      
+
       className="relative min-h-[85vh] sm:min-h-screen bg-surface overflow-hidden flex items-start sm:items-center pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-16 sm:pb-0"
     >
       {/* MoltenMetal background */}
@@ -79,7 +79,7 @@ const Hero = () => {
             <motion.h1
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] leading-[0.85] tracking-wide"
+              className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide"
             >
               <StrokedText strokeColor="var(--color-light)">
                 DIGITAL
@@ -99,7 +99,7 @@ const Hero = () => {
                   ease: "easeInOut",
                   delay: 0.8,
                 }}
-                className="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] leading-[0.85] tracking-wide"
+                className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide"
               >
                 <StrokedText
                   fillColor="transparent"
@@ -115,7 +115,7 @@ const Hero = () => {
             variants={itemVariants}
             className="mt-2 sm:mt-4 md:mt-12 self-end"
           >
-            <h1 className="font-display text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] leading-[0.85] tracking-wide">
+            <h1 className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide">
               <StrokedText strokeColor="var(--color-light)">
                 <TextType
                   as="span"

@@ -4,22 +4,30 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { X, Menu } from "lucide-react";
 import { containerVariants, itemVariants } from "../../utils/motion";
+
+type NavLink =
+  | { name: string; type: "page"; href: string }
+  | { name: string; type: "anchor"; href: string; id: string };
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const pathname = usePathname();
 
-  const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About Us", href: "#about-us" },
-    { name: "Services", href: "#services" },
-    { name: "Why Choose Us", href: "#why-us" },
-    { name: "Our Works", href: "#work" },
-    { name: "Blog", href: "#blog" },
-    { name: "Contact", href: "#contact" },
+  // "page" = its own route (app/<slug>/page.tsx). "anchor" = scrolls to a
+  // section id on the homepage only.
+  const navLinks: NavLink[] = [
+    { name: "Home", href: "/#home", type: "anchor", id: "home" },
+    { name: "About Us", href: "/about-us", type: "page" },
+    { name: "Services", href: "/services", type: "page" },
+    { name: "Why Choose Us", href: "/#why-us", type: "anchor", id: "why-us" },
+    { name: "Our Works", href: "/our-works", type: "page" },
+    { name: "Blog", href: "/blog", type: "page" },
+    { name: "Contact", href: "/#contact", type: "anchor", id: "contact" },
   ];
 
   useEffect(() => {
@@ -28,9 +36,17 @@ const Navbar = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Only observe anchor sections, and only while sitting on the homepage —
+  // other routes have no matching section ids to scroll-spy.
   useEffect(() => {
-    const sections = navLinks
-      .map((link) => document.querySelector(link.href))
+    if (pathname !== "/") return;
+
+    const anchorLinks = navLinks.filter(
+      (link): link is Extract<NavLink, { type: "anchor" }> =>
+        link.type === "anchor"
+    );
+    const sections = anchorLinks
+      .map((link) => document.getElementById(link.id))
       .filter(Boolean) as Element[];
 
     const observer = new IntersectionObserver(
@@ -41,12 +57,53 @@ const Navbar = () => {
           }
         });
       },
-      { rootMargin: "-40% 0px -40% 0px" },
+      { rootMargin: "-40% 0px -40% 0px" }
     );
 
     sections.forEach((section) => observer.observe(section));
     return () => sections.forEach((section) => observer.unobserve(section));
-  }, []);
+  }, [pathname]);
+
+  const isLinkActive = (link: NavLink) =>
+    link.type === "page"
+      ? pathname === link.href
+      : pathname === "/" && activeSection === link.id;
+
+  const renderLinks = (variant: "desktop" | "mobile") =>
+    navLinks.map((link) => {
+      const active = isLinkActive(link);
+      return (
+        <motion.div
+          key={link.name}
+          variants={itemVariants}
+          className="relative"
+        >
+          <Link
+            href={link.href}
+            onClick={variant === "mobile" ? () => setIsOpen(false) : undefined}
+            className={
+              variant === "desktop"
+                ? `relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
+                    active ? "text-dark" : "text-text-muted hover:text-primary"
+                  }`
+                : `text-3xl font-bold transition-colors ${
+                    active ? "text-primary" : "text-light hover:text-primary"
+                  }`
+            }
+          >
+            {link.name}
+          </Link>
+
+          {variant === "desktop" && active && (
+            <motion.div
+              layoutId="activeNavPill"
+              className="absolute inset-0 bg-primary rounded-full"
+              transition={{ type: "spring", stiffness: 350, damping: 30 }}
+            />
+          )}
+        </motion.div>
+      );
+    });
 
   return (
     <>
@@ -54,14 +111,15 @@ const Navbar = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
-          ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
-          : "bg-transparent border-b border-transparent"
-          }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+          scrolled
+            ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
+            : "bg-transparent border-b border-transparent"
+        }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            <Link href="#home" aria-label="Viral Brainz home">
+            <Link href="/#home" aria-label="Viral Brainz home">
               <motion.div
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -84,38 +142,7 @@ const Navbar = () => {
               animate="visible"
               className="hidden md:flex gap-2 items-center bg-surface-card border border-surface-border rounded-full px-2 py-2"
             >
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.replace("#", "");
-                return (
-                  <motion.div
-                    key={link.name}
-                    variants={itemVariants}
-                    className="relative"
-                  >
-                    <Link
-                      href={link.href}
-                      className={`relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${isActive
-                        ? "text-dark"
-                        : "text-text-muted hover:text-primary"
-                        }`}
-                    >
-                      {link.name}
-                    </Link>
-
-                    {isActive && (
-                      <motion.div
-                        layoutId="activeNavPill"
-                        className="absolute inset-0 bg-primary rounded-full"
-                        transition={{
-                          type: "spring",
-                          stiffness: 350,
-                          damping: 30,
-                        }}
-                      />
-                    )}
-                  </motion.div>
-                );
-              })}
+              {renderLinks("desktop")}
             </motion.div>
 
             <motion.button
@@ -177,23 +204,7 @@ const Navbar = () => {
               variants={containerVariants}
               className="flex flex-col items-center justify-center gap-8 h-[75%]"
             >
-              {navLinks.map((link) => {
-                const isActive = activeSection === link.href.replace("#", "");
-                return (
-                  <motion.div key={link.name} variants={itemVariants}>
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className={`text-3xl font-bold transition-colors ${isActive
-                        ? "text-primary"
-                        : "text-light hover:text-primary"
-                        }`}
-                    >
-                      {link.name}
-                    </Link>
-                  </motion.div>
-                );
-              })}
+              {renderLinks("mobile")}
               <motion.button
                 variants={itemVariants}
                 onClick={() => setIsOpen(false)}

@@ -79,11 +79,9 @@ const Hero = () => {
             <motion.h1
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide"
+              className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide"
             >
-              <StrokedText strokeColor="var(--color-light)">
-                DIGITAL
-              </StrokedText>
+              <StrokedText strokeColor="var(--color-light)">DIGITAL</StrokedText>
             </motion.h1>
           </motion.div>
 
@@ -93,20 +91,10 @@ const Hero = () => {
             <motion.div variants={itemVariants} className="relative z-10">
               <motion.h1
                 animate={{ y: [0, 10, 0] }}
-                transition={{
-                  duration: 4.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                  delay: 0.8,
-                }}
-                className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide"
+                transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
+                className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide"
               >
-                <StrokedText
-                  fillColor="transparent"
-                  strokeColor="var(--color-primary)"
-                >
-                  STRATEGY
-                </StrokedText>
+                <StrokedText fillColor="transparent" strokeColor="var(--color-primary)">STRATEGY</StrokedText>
               </motion.h1>
             </motion.div>
           </div>
@@ -115,19 +103,9 @@ const Hero = () => {
             variants={itemVariants}
             className="mt-2 sm:mt-4 md:mt-12 self-end"
           >
-            <h1 className="font-display text-[clamp(2.5rem,8vw,6rem)] leading-[0.85] tracking-wide">
+            <h1 className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide">
               <StrokedText strokeColor="var(--color-light)">
-                <TextType
-                  as="span"
-                  text={["GROWTH"]}
-                  typingSpeed={150}
-                  initialDelay={1200}
-                  pauseDuration={2000}
-                  loop={true}
-                  showCursor
-                  cursorCharacter="."
-                  cursorBlinkDuration={0.5}
-                />
+                <TextType as="span" text={["GROWTH"]} typingSpeed={150} initialDelay={1200} pauseDuration={2000} loop={true} showCursor cursorCharacter="." cursorBlinkDuration={0.5} />
               </StrokedText>
             </h1>
           </motion.div>

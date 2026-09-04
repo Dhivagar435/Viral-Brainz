@@ -6,7 +6,6 @@ import { Lightbulb, Eye, Sparkles, Shield, Target, Users2 } from "lucide-react";
 import { containerVariants, itemVariants } from "@/src/utils/motion";
 import MagneticText from "../../components/ui/MagneticText";
 
-
 const values = [
   { icon: Lightbulb, label: "Innovation" },
   { icon: Sparkles, label: "Creativity" },
@@ -15,7 +14,7 @@ const values = [
   { icon: Users2, label: "Collaboration" },
 ];
 
-const AboutUs = () => {
+export default function AboutUsPage() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -27,7 +26,6 @@ const AboutUs = () => {
   return (
     <section
       ref={sectionRef}
-      id="about-us"
       className="relative bg-surface py-24 overflow-hidden"
     >
       <motion.div style={{ y: glowY }} className="absolute inset-0">
@@ -41,16 +39,25 @@ const AboutUs = () => {
       </motion.div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Page intro — new entrance, distinct from home teaser */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-4"
+        >
+          <span className="inline-block bg-surface-card border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full">
+            About Us
+          </span>
+        </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
           className="text-center max-w-3xl mx-auto mb-20"
         >
-          <span className="inline-block bg-surface-card border border-primary/30 text-primary text-sm font-semibold px-4 py-1.5 rounded-full mb-4">
-            About Us
-          </span>
           <MagneticText>
             <h2 className="text-4xl md:text-5xl font-bold text-light mb-6">
               About <span className="text-primary">Viral Brainz</span>
@@ -75,7 +82,7 @@ const AboutUs = () => {
           </p>
         </motion.div>
 
-        {/* Mission / Vision */}
+        {/* Mission / Vision — unchanged content, kept as you asked */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -162,6 +169,4 @@ const AboutUs = () => {
       </div>
     </section>
   );
-};
-
-export default AboutUs;
+}

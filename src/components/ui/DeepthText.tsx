@@ -163,7 +163,7 @@ const DepthText = ({
     ...style,
     perspective: `${safePerspective}px`,
     perspectiveOrigin: '50% 48%',
-    contain: 'layout paint',
+    contain: 'layout',
     isolation: 'isolate'
   };
 
@@ -178,7 +178,7 @@ const DepthText = ({
     fontSize,
     fontWeight,
     lineHeight: 0.86,
-    letterSpacing: '-0.065em',
+    letterSpacing: '-0.04em',
     whiteSpace: 'nowrap',
     userSelect: 'none',
     transformStyle: 'preserve-3d',

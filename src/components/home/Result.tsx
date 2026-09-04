@@ -6,6 +6,7 @@ import { FaInstagram, FaTwitter } from "react-icons/fa";
 import InfiniteSpiral from "../ui/InfiniteSpiral";
 import MagicRings from "../ui/MagicRings";
 import DepthText from "../ui/DeepthText";
+import { motion } from "framer-motion";
 
 export default function ResultsSection() {
   const [isVisible, setIsVisible] = useState(false);
@@ -86,35 +87,40 @@ export default function ResultsSection() {
       {/* CONTENT OVERLAY */}
       <div className="relative z-10">
         {/* CENTERED HEADING */}
-        <div className="text-center mb-20">
-        <DepthText
-                 text="ACHIEVEMENTS"
-                 layers={34}
-                 depth={2.4}
-                 faceColor="var(--color-light)"
-                 depthColor="var(--color-primary)"
-                 tilt={7.5}
-                 pointerTracking
-                 smoothing={0.14}
-                 perspective={900}
-                 autoOrbit
-                 orbitSpeed={0.35}
-                 fontSize="clamp(3rem, 12vw, 7rem)"
-                 fontWeight={900}
-                 shadow
-               />
-        </div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.4 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+          className="flex justify-center mb-20 px-8 sm:px-12 md:px-16 overflow-visible"
+        >
+          <DepthText
+            text="ACHIEVEMENTS"
+            layers={34}
+            depth={2.4}
+            faceColor="var(--color-light)"
+            depthColor="var(--color-primary)"
+            tilt={7.5}
+            pointerTracking
+            smoothing={0.14}
+            perspective={900}
+            autoOrbit
+            orbitSpeed={0.35}
+            fontSize="clamp(3rem, 12vw, 7rem)"
+            fontWeight={900}
+            shadow
+          />
+        </motion.div>
 
         {/* TWO COLUMN LAYOUT */}
         <div className="max-w-7xl mx-auto grid grid-cols-2 gap-20 items-center">
           {/* LEFT SIDE - TEXT */}
           <div className="space-y-8">
             <p
-              className={`text-lg leading-relaxed transition-all duration-1000 delay-200 text-white/70 max-w-sm ${
-                isVisible
+              className={`text-lg leading-relaxed transition-all duration-1000 delay-200 text-white/70 max-w-sm ${isVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-12"
-              }`}
+                }`}
             >
               Strategy meets creativity to deliver measurable results. Our
               approach combines data-driven insights with bold creative execution,
@@ -124,11 +130,10 @@ export default function ResultsSection() {
 
             {/* STATS COUNTER */}
             <div
-              className={`pt-8 border-t border-[#1F1F1F] transition-all duration-1000 delay-300 ${
-                isVisible
+              className={`pt-8 border-t border-[#1F1F1F] transition-all duration-1000 delay-300 ${isVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-12"
-              }`}
+                }`}
             >
               <div className="flex items-baseline gap-3">
                 <span
@@ -146,9 +151,8 @@ export default function ResultsSection() {
 
           {/* RIGHT SIDE - SPIRAL WITH ICONS */}
           <div
-            className={`transition-all duration-1000 delay-400 ${
-              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-            }`}
+            className={`transition-all duration-1000 delay-400 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+              }`}
           >
             <div
               style={{

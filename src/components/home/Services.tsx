@@ -125,7 +125,7 @@ const Services = () => {
         whileInView={{ opacity: 1, scale: 1 }}
         viewport={{ once:false, amount: 0.4 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-        className="flex justify-center mb-16"
+        className="flex justify-center mb-16 px-8 sm:px-12 md:px-16 overflow-visible"
       >
         <DepthText
           text="SERVICES"

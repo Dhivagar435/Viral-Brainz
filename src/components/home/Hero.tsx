@@ -39,6 +39,7 @@ const Hero = () => {
   return (
     <section
       id="home"
+      
       className="relative min-h-[85vh] sm:min-h-screen bg-surface overflow-hidden flex items-start sm:items-center pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-16 sm:pb-0"
     >
       {/* MoltenMetal background */}

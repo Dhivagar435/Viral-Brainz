@@ -137,7 +137,7 @@ const Blog = () => {
         >
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 bg-primary text-dark px-8 py-4 rounded-lg font-bold text-lg hover:bg-primary-tint hover:rounded-full transition-all duration-300"
+            className="group inline-flex items-center gap-2 sm:gap-3 rounded-full border border-primary bg-primary px-5 py-1.5 sm:px-8 sm:py-3 text-sm sm:text-base font-bold text-dark shadow-[0_0_25px_var(--color-primary-glow)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-tint hover:shadow-[0_0_35px_var(--color-primary-glow)]"
           >
             Read All Insights
             <ArrowUpRight className="w-5 h-5" />

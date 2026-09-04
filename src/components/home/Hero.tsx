@@ -19,28 +19,28 @@ const StrokedText = ({
     className={className}
     style={{
       color: fillColor,
-      WebkitTextStroke: `4px ${strokeColor}`,
+      WebkitTextStroke: `clamp(2px, 0.4vw, 4px) ${strokeColor}`,
       textShadow: `
-        -3px -3px 0 ${strokeColor},
-        3px -3px 0 ${strokeColor},
-        -3px 3px 0 ${strokeColor},
-        3px 3px 0 ${strokeColor},
-        0 -3px 0 ${strokeColor},
-        0 3px 0 ${strokeColor},
-        -3px 0 0 ${strokeColor},
-        3px 0 0 ${strokeColor}
+        -2px -2px 0 ${strokeColor},
+        2px -2px 0 ${strokeColor},
+        -2px 2px 0 ${strokeColor},
+        2px 2px 0 ${strokeColor},
+        0 -2px 0 ${strokeColor},
+        0 2px 0 ${strokeColor},
+        -2px 0 0 ${strokeColor},
+        2px 0 0 ${strokeColor}
       `,
     }}
   >
     {children}
   </span>
 );
+
 const Hero = () => {
   return (
     <section
       id="home"
-
-      className="relative min-h-[85vh] sm:min-h-screen bg-surface overflow-hidden flex items-start sm:items-center pt-24 sm:pt-28 md:pt-32 lg:pt-36 pb-16 sm:pb-0"
+      className="relative lg:min-h-screen bg-surface overflow-hidden flex items-center pt-24 pb-16 lg:pt-20 lg:pb-10"
     >
       {/* MoltenMetal background */}
       <div className="absolute inset-0 z-0">
@@ -71,7 +71,7 @@ const Hero = () => {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 w-full"
+        className="relative z-10 max-w-6xl lg:max-w-7xl xl:max-w-[90rem] mx-auto px-4 sm:px-6 lg:px-10 xl:px-16 w-full"
       >
         {/* Three-row staggered headline, aligned start / center / end */}
         <div className="relative flex flex-col">
@@ -79,20 +79,18 @@ const Hero = () => {
             <motion.h1
               animate={{ y: [0, -10, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-              className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide"
+              className="font-display font-black text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-normal sm:tracking-wide"
             >
               <StrokedText strokeColor="var(--color-light)">DIGITAL</StrokedText>
             </motion.h1>
           </motion.div>
 
-          <div className="relative flex items-center justify-center mt-2 sm:mt-4 md:mt-6 self-center">
-            <div className="absolute -left-4 sm:left-4 md:left-10 -bottom-6 sm:-bottom-10 z-0 opacity-95"></div>
-
+          <div className="relative flex items-center justify-center mt-2 sm:mt-4 md:mt-6 lg:mt-8 xl:mt-10 self-center">
             <motion.div variants={itemVariants} className="relative z-10">
               <motion.h1
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", delay: 0.8 }}
-                className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide"
+                className="font-display font-black text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-normal sm:tracking-wide"
               >
                 <StrokedText fillColor="transparent" strokeColor="var(--color-primary)">STRATEGY</StrokedText>
               </motion.h1>
@@ -101,20 +99,19 @@ const Hero = () => {
 
           <motion.div
             variants={itemVariants}
-            className="mt-2 sm:mt-4 md:mt-12 self-end"
+            className="mt-6 sm:mt-8 md:mt-10 lg:mt-12 xl:mt-12 self-end"
           >
-            <h1 className="font-display font-black text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-wide">
+            <h1 className="font-display font-black text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl leading-[0.85] tracking-normal sm:tracking-wide">
               <StrokedText strokeColor="var(--color-light)">
                 <TextType as="span" text={["GROWTH"]} typingSpeed={150} initialDelay={1200} pauseDuration={2000} loop={true} showCursor cursorCharacter="." cursorBlinkDuration={0.5} />
               </StrokedText>
             </h1>
           </motion.div>
         </div>
-        ``
-        {/* Description */}
+
         <motion.p
           variants={itemVariants}
-          className="text-sm sm:text-base md:text-lg text-text-muted leading-relaxed max-w-2xl mt-7 sm:mt-10 ml-1"
+          className="text-sm sm:text-base md:text-lg text-text-muted leading-relaxed max-w-2xl mt-6 sm:mt-8 lg:mt-10 ml-1"
         >
           We help brands grow through social media, SEO, and performance
           marketing. From content to conversions — impact across every digital

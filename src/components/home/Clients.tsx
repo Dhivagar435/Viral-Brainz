@@ -18,7 +18,7 @@ const Clients = () => {
   const loopedClients = [...clients, ...clients, ...clients];
 
   return (
-    <section id="clients" className="relative bg-surface py-20 overflow-hidden">
+    <section id="clients" className="relative bg-surface overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

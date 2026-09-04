@@ -83,12 +83,10 @@ const Navbar = () => {
             onClick={variant === "mobile" ? () => setIsOpen(false) : undefined}
             className={
               variant === "desktop"
-                ? `relative z-10 block px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 ${
-                    active ? "text-dark" : "text-text-muted hover:text-primary"
-                  }`
-                : `text-3xl font-bold transition-colors ${
-                    active ? "text-primary" : "text-light hover:text-primary"
-                  }`
+                ? `relative z-10 block px-3 py-1.5 lg:px-4 lg:py-2 rounded-full text-xs lg:text-sm font-medium transition-colors duration-300 ${active ? "text-dark" : "text-text-muted hover:text-primary"
+                }`
+                : `text-3xl font-bold transition-colors ${active ? "text-primary" : "text-light hover:text-primary"
+                }`
             }
           >
             {link.name}
@@ -111,11 +109,10 @@ const Navbar = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled
-            ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
-            : "bg-transparent border-b border-transparent"
-        }`}
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled
+          ? "bg-surface/80 backdrop-blur-md border-b border-surface-border shadow-lg"
+          : "bg-transparent border-b border-transparent"
+          }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -140,7 +137,7 @@ const Navbar = () => {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="hidden md:flex gap-2 items-center bg-surface-card border border-surface-border rounded-full px-2 py-2"
+              className="hidden md:flex gap-1 lg:gap-2 items-center bg-surface-card border border-surface-border rounded-full px-2 py-2"
             >
               {renderLinks("desktop")}
             </motion.div>
@@ -152,7 +149,7 @@ const Navbar = () => {
                 boxShadow: "0 8px 25px var(--color-primary-soft)",
               }}
               whileTap={{ scale: 0.95 }}
-              className="hidden md:block bg-primary text-dark px-6 py-2.5 rounded-full font-semibold transition-all"
+              className="hidden md:block bg-primary text-dark px-4 py-2 lg:px-6 lg:py-2.5 text-xs lg:text-sm rounded-full font-semibold transition-all"
             >
               Get in Touch
             </motion.button>
@@ -180,7 +177,7 @@ const Navbar = () => {
             <div className="flex justify-between items-center px-6 pt-6">
               <div className="relative w-12 h-12 rounded-xl overflow-hidden">
                 <Image
-                  src="/logo/viral-brainz-logo.png"
+                  src="/logo/viral-brainz-logo  .png"
                   alt="Viral Brainz"
                   fill
                   sizes="48px"

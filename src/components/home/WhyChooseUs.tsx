@@ -8,8 +8,8 @@ import {
   useTransform,
   useSpring,
   useScroll,
-  Variants,
 } from "framer-motion";
+import Image from "next/image";
 import { Compass, PenTool, BarChart3, Layers, UserCheck, ArrowUpRight } from "lucide-react";
 import MagneticText from "../ui/MagneticText";
 
@@ -45,13 +45,11 @@ const ReasonRow = ({
 
   const spotlight = useMotionTemplate`radial-gradient(320px circle at ${mouseX}px ${mouseY}px, var(--color-primary-wash), transparent 70%)`;
 
-  // SCROLL-LINKED horizontal drift, tracked to THIS row's own position in the viewport
   const { scrollYProgress } = useScroll({
     target: rowRef,
-    offset: ["start end", "end start"], // row enters from bottom, tracked until it exits top
+    offset: ["start end", "end start"],
   });
 
-  // alternate direction per row: even rows drift left->right, odd rows right->left
   const fromX = index % 2 === 0 ? -80 : 80;
   const rawX = useTransform(scrollYProgress, [0, 0.5, 1], [fromX, 0, -fromX * 0.3]);
   const x = useSpring(rawX, { stiffness: 120, damping: 24, mass: 0.5 });
@@ -105,6 +103,11 @@ const WhyChooseUs = () => {
   });
   const glowX = useTransform(scrollYProgress, [0, 1], ["70%", "30%"]);
 
+  // Logo drifts right -> left as the section scrolls through view,
+  // run through a spring so it eases smoothly instead of jumping with scroll.
+  const rawLogoX = useTransform(scrollYProgress, [0, 1], [120, -60]);
+  const logoX = useSpring(rawLogoX, { stiffness: 80, damping: 24, mass: 0.6 });
+
   return (
     <section ref={sectionRef} id="why-us" className="relative bg-surface py-24 overflow-hidden">
       <motion.div
@@ -116,7 +119,7 @@ const WhyChooseUs = () => {
         }}
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -134,10 +137,28 @@ const WhyChooseUs = () => {
           </MagneticText>
         </motion.div>
 
-        <div className="border-t border-surface-border">
-          {reasons.map((reason, index) => (
-            <ReasonRow key={reason.title} index={index} {...reason} />
-          ))}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] xl:lg:grid-cols-[1fr_400px] gap-10 lg:gap-16 items-start">
+          <div className="border-t border-surface-border">
+            {reasons.map((reason, index) => (
+              <ReasonRow key={reason.title} index={index} {...reason} />
+            ))}
+          </div>
+
+          {/* Logo — hidden on mobile/tablet, sticky + scroll-linked drift right -> left on lg+ */}
+          <motion.div
+            style={{ x: logoX }}
+            className="hidden lg:block lg:sticky lg:top-32"
+          >
+            <div className="relative w-full h-[570px] xl:h-[700px] rounded-2xl overflow-hidden border border-surface-border">
+              <Image
+                src="/logo/viral-brainz-logo-1.png"
+                alt="Viral Brainz"
+                fill
+                sizes="400px"
+                className="object-contain"
+              />
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>

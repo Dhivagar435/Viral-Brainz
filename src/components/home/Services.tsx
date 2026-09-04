@@ -35,8 +35,8 @@ const BentoTile = ({
     size === "large"
       ? "md:col-span-2 md:row-span-2"
       : size === "wide"
-      ? "md:col-span-2 md:row-span-1"
-      : "md:col-span-1 md:row-span-1";
+        ? "md:col-span-2 md:row-span-1"
+        : "md:col-span-1 md:row-span-1";
 
   const heightClass = size === "large" ? "h-[340px] md:h-full" : "h-[220px] md:h-full";
 
@@ -123,7 +123,7 @@ const Services = () => {
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
         whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once:false, amount: 0.4 }}
+        viewport={{ once: false, amount: 0.4 }}
         transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
         className="flex justify-center mb-16 px-8 sm:px-12 md:px-16 overflow-visible"
       >
@@ -152,14 +152,15 @@ const Services = () => {
           ))}
         </div>
 
-        <div className="mt-12 flex justify-center">
+        <div className="mt-8 sm:mt-12 flex justify-center">
           <Link
             href="/services"
-            className="group inline-flex items-center gap-3 rounded-full border border-primary bg-primary px-8 py-4 text-base font-bold text-dark shadow-[0_0_25px_var(--color-primary-glow)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-hover hover:shadow-[0_0_35px_var(--color-primary-glow)]"
+            className="group inline-flex items-center gap-2 sm:gap-3 rounded-full border border-primary bg-primary px-5 py-1.5 sm:px-8 sm:py-3 text-sm sm:text-base font-bold text-dark shadow-[0_0_25px_var(--color-primary-glow)] transition-all duration-300 hover:-translate-y-1 hover:bg-primary-tint hover:shadow-[0_0_35px_var(--color-primary-glow)]"
           >
             <span>View All Services</span>
-            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-dark text-primary transition-transform duration-300 group-hover:translate-x-1">
-              <ArrowRight size={18} strokeWidth={2.5} />
+            <span className="flex h-6 w-6 sm:h-8 sm:w-8 items-center justify-center rounded-full bg-dark text-primary transition-transform duration-300 group-hover:translate-x-1">
+              <ArrowRight size={16} strokeWidth={2.5} className="sm:hidden" />
+              <ArrowRight size={18} strokeWidth={2.5} className="hidden sm:block" />
             </span>
           </Link>
         </div>

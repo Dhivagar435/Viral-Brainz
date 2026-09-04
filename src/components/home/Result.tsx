@@ -56,7 +56,7 @@ export default function ResultsSection() {
   ];
 
   return (
-    <section className="relative min-h-screen bg-[#0A0A0A] py-20 px-8 overflow-hidden">
+    <section className="relative  md:min-h-screen bg-surface px-4 sm:px-6 md:px-8 overflow-hidden">
       {/* MAGIC RINGS BACKGROUND */}
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <MagicRings
@@ -92,7 +92,7 @@ export default function ResultsSection() {
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: false, amount: 0.4 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-          className="flex justify-center mb-20 px-8 sm:px-12 md:px-16 overflow-visible"
+          className="flex justify-center mb-10 sm:mb-14 md:mb-20 px-4 sm:px-12 md:px-16 overflow-visible"
         >
           <DepthText
             text="ACHIEVEMENTS"
@@ -106,21 +106,22 @@ export default function ResultsSection() {
             perspective={900}
             autoOrbit
             orbitSpeed={0.35}
-            fontSize="clamp(3rem, 12vw, 7rem)"
+            fontSize="clamp(2.2rem, 9vw, 7rem)"
             fontWeight={900}
             shadow
           />
         </motion.div>
 
-        {/* TWO COLUMN LAYOUT */}
-        <div className="max-w-7xl mx-auto grid grid-cols-2 gap-20 items-center">
-          {/* LEFT SIDE - TEXT */}
-          <div className="space-y-8">
+        {/* LAYOUT: stacked on mobile (text -> spiral), side-by-side from md up */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 lg:px-12 grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-14 md:gap-20 items-center">
+          {/* TEXT */}
+          <div className="space-y-6 sm:space-y-8 text-center md:text-left">
             <p
-              className={`text-lg leading-relaxed transition-all duration-1000 delay-200 text-white/70 max-w-sm ${isVisible
+              className={`text-sm sm:text-base md:text-lg leading-relaxed transition-all duration-1000 delay-200 text-white/70 max-w-sm mx-auto md:mx-0 ${
+                isVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-12"
-                }`}
+              }`}
             >
               Strategy meets creativity to deliver measurable results. Our
               approach combines data-driven insights with bold creative execution,
@@ -130,45 +131,48 @@ export default function ResultsSection() {
 
             {/* STATS COUNTER */}
             <div
-              className={`pt-8 border-t border-[#1F1F1F] transition-all duration-1000 delay-300 ${isVisible
+              className={`pt-6 sm:pt-8 border-t border-[#1F1F1F] transition-all duration-1000 delay-300 ${
+                isVisible
                   ? "opacity-100 translate-x-0"
                   : "opacity-0 -translate-x-12"
-                }`}
+              }`}
             >
-              <div className="flex items-baseline gap-3">
+              <div className="flex items-baseline justify-center md:justify-start gap-2 sm:gap-3">
                 <span
-                  className="text-5xl font-black"
+                  className="text-3xl sm:text-4xl md:text-5xl font-black"
                   style={{ color: "#FDB913" }}
                 >
                   500+
                 </span>
-                <span className="text-sm text-white/50">
+                <span className="text-xs sm:text-sm text-white/50">
                   Projects delivered successfully
                 </span>
               </div>
             </div>
           </div>
 
-          {/* RIGHT SIDE - SPIRAL WITH ICONS */}
+          {/* SPIRAL WITH ICONS — appears below text on mobile via source order */}
           <div
-            className={`transition-all duration-1000 delay-400 ${isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
-              }`}
+            className={`transition-all duration-1000 delay-400 ${
+              isVisible ? "opacity-100 scale-100" : "opacity-0 scale-95"
+            }`}
           >
             <div
               style={{
-                height: "600px",
+                height: "360px",
                 position: "relative",
                 overflow: "hidden",
               }}
+              className="sm:!h-[440px] md:!h-[600px]"
             >
               <InfiniteSpiral
                 items={stats}
                 animationMode="auto"
                 speed={0.55}
-                radius={170}
-                cardWidth={160}
-                cardHeight={160}
-                verticalSpacing={70}
+                radius={120}
+                cardWidth={140}
+                cardHeight={140}
+                verticalSpacing={60}
                 perspective={1000}
                 cardRadius={10}
                 centerScale={1.2}
@@ -180,17 +184,18 @@ export default function ResultsSection() {
                 cardTilt={0}
                 edgeFade={0.3}
                 renderCard={(item) => (
-                  <div className="flex flex-col items-center justify-center h-full bg-[#141414] rounded-lg border border-[#1F1F1F] p-4 hover:border-[#FDB913] transition-colors gap-2">
-                    <div className="text-2xl" style={{ color: "#FDB913" }}>
-                      {item.icon ? <item.icon size={28} /> : null}
+                  <div className="flex flex-col items-center justify-center h-full bg-[#141414] rounded-lg border border-[#1F1F1F] p-3 sm:p-4 hover:border-[#FDB913] transition-colors gap-1.5 sm:gap-2">
+                    <div className="text-xl sm:text-2xl" style={{ color: "#FDB913" }}>
+                      {item.icon ? <item.icon size={22} className="sm:hidden" /> : null}
+                      {item.icon ? <item.icon size={28} className="hidden sm:block" /> : null}
                     </div>
                     <div className="text-center">
-                      <div className="text-xs font-semibold text-white">
+                      <div className="text-[10px] sm:text-xs font-semibold text-white">
                         {item.prefix}
                         {item.value}
                         {item.suffix}
                       </div>
-                      <div className="text-xs text-white/50 mt-1">
+                      <div className="text-[10px] sm:text-xs text-white/50 mt-1">
                         {item.label}
                       </div>
                     </div>
